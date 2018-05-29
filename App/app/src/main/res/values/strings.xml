@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Art Machina</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_gallery_artwork">Gallery</string>
+    <string name="title_gallery_search">Search</string>
+    <string name="title_gallery_bookmarks">Bookmarks</string>
+    <string name="title_gallery_settings">Settings</string>
 </resources>

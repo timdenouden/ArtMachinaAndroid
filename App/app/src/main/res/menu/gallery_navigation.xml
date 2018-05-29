@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/gallery_artwork"
+        android:icon="@drawable/ic_baseline_color_lens_24px"
+        android:title="@string/title_gallery_artwork"
+        app:showAsAction="always|withText" />
+
+    <item
+        android:id="@+id/gallery_search"
+        android:icon="@drawable/ic_baseline_search_24px"
+        android:title="@string/title_gallery_search"
+        app:showAsAction="always|withText" />
+
+    <item
+        android:id="@+id/gallery_bookmarks"
+        android:icon="@drawable/ic_baseline_bookmark_24px"
+        android:title="@string/title_gallery_bookmarks"
+        app:showAsAction="always|withText" />
+
+    <item
+        android:id="@+id/gallery_settings"
+        android:icon="@drawable/ic_baseline_settings_20px"
+        android:title="@string/title_gallery_settings"
+        app:showAsAction="always|withText" />
+
+</menu>
