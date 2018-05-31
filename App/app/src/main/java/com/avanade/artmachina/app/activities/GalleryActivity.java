@@ -8,20 +8,28 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
 import com.avanade.artmachina.R;
 import com.avanade.artmachina.app.fragments.ArtworkFragment;
 import com.avanade.artmachina.app.fragments.BookmarksFragment;
 import com.avanade.artmachina.app.fragments.SearchFragment;
 import com.avanade.artmachina.app.fragments.SettingsFragment;
+import com.avanade.artmachina.app.views.IndexableBottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GalleryActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    BottomNavigationView navigation;
+    public static final String TAG = "Gallery";
+
+    Toolbar toolbar;
+    IndexableBottomNavigationView navigation;
     ViewPager viewPager;
 
     /* Activity Lifecycle Methods */
@@ -32,10 +40,18 @@ public class GalleryActivity extends AppCompatActivity implements BottomNavigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
 
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         navigation = findViewById(R.id.gallery_navigation);
         viewPager = findViewById(R.id.view_pager);
         navigation.setOnNavigationItemSelectedListener(this);
         setupViewPager();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.gallery_filter, menu);
+        return true;
     }
 
     /* Private Methods */
@@ -76,6 +92,8 @@ public class GalleryActivity extends AppCompatActivity implements BottomNavigati
         return false;
     }
 
+    /* Private Classes */
+
     public class ViewPagerAdapter extends FragmentPagerAdapter {
 
         private final List<Fragment> fragmentList = new ArrayList<>();
@@ -92,6 +110,13 @@ public class GalleryActivity extends AppCompatActivity implements BottomNavigati
         @Override
         public int getCount() {
             return fragmentList.size();
+        }
+
+        @Override
+        public void setPrimaryItem(ViewGroup container, int position, Object object) {
+            if(navigation.getSelectedIndex() != position) {
+                navigation.setSelectedIndex(position);
+            }
         }
 
         public void addFragment(Fragment fragment) {
