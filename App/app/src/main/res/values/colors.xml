@@ -3,5 +3,6 @@
     <color name="colorPrimary">#424242</color>
     <color name="colorPrimaryDark">#212121</color>
     <color name="colorAccent">#2196F3</color>
-    <color name="colorTextLight">#FFFFFF</color>
+    <color name="colorTextLight">#ffffff</color>
+    <color name="colorOpaqueImageOverlay">#BB000000</color>
 </resources>
