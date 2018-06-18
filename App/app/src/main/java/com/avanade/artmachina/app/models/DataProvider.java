@@ -3,29 +3,31 @@ import java.util.List;
 
 public interface DataProvider {
 
-    interface AuthCompletion {
+    interface FailureListener {
+        void failure(HttpResponseError error);
+    }
+
+    interface AuthCompletion extends FailureListener {
         void complete(String token);
     }
 
-    interface ProfileCompletion {
+    interface ProfileCompletion extends FailureListener {
         void complete(User profile);
     }
 
-    interface ArtworkListCompletion {
+    interface ArtworkListCompletion extends FailureListener {
         void complete(List<Artwork> artworkList);
-        void failure(String failureMessage);
     }
 
-    interface CommentListCompletion {
+    interface CommentListCompletion extends FailureListener {
         void complete(List<Comment> commentList);
     }
 
-    interface ArtworkCompletion {
+    interface ArtworkCompletion extends FailureListener {
         void complete(Artwork artwork);
-        void failure(String failureMessage);
     }
 
-    interface UrlCompletion {
+    interface UrlCompletion extends FailureListener {
         void complete(String url);
     }
 
