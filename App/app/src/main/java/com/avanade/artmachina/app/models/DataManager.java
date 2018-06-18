@@ -13,6 +13,9 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DataManager {
     private static final int IMAGE_CACHE_MAX_SIZE = 10;
 
@@ -20,6 +23,7 @@ public class DataManager {
 
     private RequestQueue requestQueue;
     private ImageLoader imageLoader;
+    private DataProvider dataProvider;
 
     private DataManager(Context context) {
         requestQueue = Volley.newRequestQueue(context);
@@ -37,6 +41,9 @@ public class DataManager {
                 cache.put(url, bitmap);
             }
         });
+
+        // Note: this is just for testing
+        dataProvider = new StaticDataProvider();
     }
 
     public static DataManager getInstance(Context context) {
@@ -52,5 +59,13 @@ public class DataManager {
 
     public ImageLoader getImageLoader() {
         return imageLoader;
+    }
+
+    public void getArtworkList(DataProvider.ArtworkListCompletion completion) {
+        dataProvider.getArtworkList("token", completion);
+    }
+
+    public void getArtwork(int id, DataProvider.ArtworkCompletion completion) {
+
     }
 }

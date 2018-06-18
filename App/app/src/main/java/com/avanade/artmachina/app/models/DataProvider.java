@@ -13,6 +13,7 @@ public interface DataProvider {
 
     interface ArtworkListCompletion {
         void complete(List<Artwork> artworkList);
+        void failure(String failureMessage);
     }
 
     interface CommentListCompletion {
@@ -21,6 +22,7 @@ public interface DataProvider {
 
     interface ArtworkCompletion {
         void complete(Artwork artwork);
+        void failure(String failureMessage);
     }
 
     interface UrlCompletion {
