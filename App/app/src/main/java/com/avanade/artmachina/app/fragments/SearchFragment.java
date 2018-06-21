@@ -15,17 +15,20 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.avanade.artmachina.R;
 import com.avanade.artmachina.app.models.Artwork;
 import com.avanade.artmachina.app.models.DataManager;
+import com.avanade.artmachina.app.models.DataProvider;
+import com.avanade.artmachina.app.models.HttpResponseError;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.ServiceConfigurationError;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SearchFragment extends Fragment {
-    private ArrayList<Artwork> artworks;
     private RecyclerView searchList;
-    private RecyclerView.Adapter searchListAdapter;
+    private SearchListAdapter searchListAdapter;
     private RecyclerView.LayoutManager searchListLayoutManager;
 
     public SearchFragment() {
@@ -35,7 +38,21 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        artworks = new ArrayList<>();
+        DataManager.getInstance(getContext()).getArtworkList(new DataProvider.ArtworkListCompletion() {
+            @Override
+            public void complete(List<Artwork> artworkList) {
+                if(searchListAdapter != null) {
+                    searchListAdapter.setArtworks(new ArrayList<Artwork>(artworkList));
+                }
+            }
+
+            @Override
+            public void failure(HttpResponseError error) {
+                if(searchListAdapter != null) {
+                    searchListAdapter.setArtworks(null);
+                }
+            }
+        });
     }
 
     @Override
@@ -46,7 +63,7 @@ public class SearchFragment extends Fragment {
         searchList.setHasFixedSize(true);
         searchListLayoutManager = new LinearLayoutManager(getContext());
         searchList.setLayoutManager(searchListLayoutManager);
-        searchListAdapter = new SearchListAdapter(artworks);
+        searchListAdapter = new SearchListAdapter();
         searchList.setAdapter(searchListAdapter);
         //int spacingInPixels = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
         //galleryList.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
@@ -57,8 +74,17 @@ public class SearchFragment extends Fragment {
     private class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.ViewHolder> {
         private ArrayList<Artwork> artworks;
 
+        public SearchListAdapter() {
+
+        }
+
         public SearchListAdapter(ArrayList<Artwork> artworks) {
             this.artworks = artworks;
+        }
+
+        public void setArtworks(ArrayList<Artwork> artworks) {
+            this.artworks = artworks;
+            notifyDataSetChanged();
         }
 
         @NonNull
@@ -72,13 +98,15 @@ public class SearchFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
             Artwork artwork = artworks.get(position);
-            viewHolder.searchImage.setDefaultImageResId(R.drawable.ic_baseline_star_border_24px);
-            viewHolder.searchImage.setImageUrl("https://avanadeprojectstorage.blob.core.windows.net/art-machina/pro_Self-Portrait_1889.png", DataManager.getInstance(getActivity()).getImageLoader());
+            viewHolder.searchImage.setImageUrl(artwork.getProcessedImageUrl().toString(), DataManager.getInstance(getActivity()).getImageLoader());
             viewHolder.artworkTitle.setText(artwork.getTitle());
         }
 
         @Override
         public int getItemCount() {
+            if(artworks == null) {
+                return 0;
+            }
             return artworks.size();
         }
 
