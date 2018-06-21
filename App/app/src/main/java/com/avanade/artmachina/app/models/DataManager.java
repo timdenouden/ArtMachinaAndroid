@@ -66,6 +66,6 @@ public class DataManager {
     }
 
     public void getArtwork(int id, DataProvider.ArtworkCompletion completion) {
-
+        dataProvider.getArtwork("token", id, completion);
     }
 }

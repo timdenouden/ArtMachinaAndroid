@@ -2,6 +2,7 @@ package com.avanade.artmachina.app.fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -21,12 +22,15 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.avanade.artmachina.R;
+import com.avanade.artmachina.app.activities.ArtworkDetailActivity;
 import com.avanade.artmachina.app.models.Artwork;
 import com.avanade.artmachina.app.models.DataManager;
+import com.avanade.artmachina.app.models.DataProvider;
 
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,139 +50,23 @@ public class ArtworkFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        artworks = new ArrayList<>();
-        try {
-            artworks.add(new Artwork(
-                    5,
-                    "Self-Portrait (1889)",
-                    "Possibly van Gogh’s final self-portrait, it shows van Gogh after he mutilated his ear and voluntarily entered an asylum. Van Gogh is instantly recognizable by his reddish hair and beard, his gaunt features, and intense gaze. Van Gogh painted some 36 self-portraits in the space of only ten years. In the painting the attention is focused on the face. His features are hard and emaciated, his green-rimmed eyes seem intransigent and anxious. The dominant colour, a mix of absinth green and pale turquoise finds a counterpoint in its complementary colour, the fiery orange of the beard and hair. The model's immobility contrasts with the undulating hair and beard, echoed and amplified in the hallucinatory arabesques of the background.",
-                    "2018-06-05T11:25:24.551268-07:00",
-                    "Vincent Van Gogh",
-                    1,
-                    3.33,
-                    5,
-                    2,
-                    new URL("https://avanadeprojectstorage.blob.core.windows.net/art-machina/src_Self-Portrait_1889.jpg"),
-                    3024,
-                    4032,
-                    new URL("https://avanadeprojectstorage.blob.core.windows.net/art-machina/pro_Self-Portrait_1889.png"),
-                    600,
-                    800,
-                    new URL("https://avanadeprojectstorage.blob.core.windows.net/art-machina/ref_Self-Portrait_1889.jpg"),
-                    3142,
-                    3820,
-                    3,
-                    false));
-            artworks.add(new Artwork(
-                    5,
-                    "Self-Portrait (1889)",
-                    "Possibly van Gogh’s final self-portrait, it shows van Gogh after he mutilated his ear and voluntarily entered an asylum. Van Gogh is instantly recognizable by his reddish hair and beard, his gaunt features, and intense gaze. Van Gogh painted some 36 self-portraits in the space of only ten years. In the painting the attention is focused on the face. His features are hard and emaciated, his green-rimmed eyes seem intransigent and anxious. The dominant colour, a mix of absinth green and pale turquoise finds a counterpoint in its complementary colour, the fiery orange of the beard and hair. The model's immobility contrasts with the undulating hair and beard, echoed and amplified in the hallucinatory arabesques of the background.",
-                    "2018-06-05T11:25:24.551268-07:00",
-                    "Vincent Van Gogh",
-                    1,
-                    3.33,
-                    5,
-                    2,
-                    new URL("https://avanadeprojectstorage.blob.core.windows.net/art-machina/src_Self-Portrait_1889.jpg"),
-                    3024,
-                    4032,
-                    new URL("https://avanadeprojectstorage.blob.core.windows.net/art-machina/pro_Self-Portrait_1889.png"),
-                    600,
-                    800,
-                    new URL("https://avanadeprojectstorage.blob.core.windows.net/art-machina/ref_Self-Portrait_1889.jpg"),
-                    3142,
-                    3820,
-                    3,
-                    false));
-            artworks.add(new Artwork(
-                    5,
-                    "Self-Portrait (1889)",
-                    "Possibly van Gogh’s final self-portrait, it shows van Gogh after he mutilated his ear and voluntarily entered an asylum. Van Gogh is instantly recognizable by his reddish hair and beard, his gaunt features, and intense gaze. Van Gogh painted some 36 self-portraits in the space of only ten years. In the painting the attention is focused on the face. His features are hard and emaciated, his green-rimmed eyes seem intransigent and anxious. The dominant colour, a mix of absinth green and pale turquoise finds a counterpoint in its complementary colour, the fiery orange of the beard and hair. The model's immobility contrasts with the undulating hair and beard, echoed and amplified in the hallucinatory arabesques of the background.",
-                    "2018-06-05T11:25:24.551268-07:00",
-                    "Vincent Van Gogh",
-                    1,
-                    3.33,
-                    5,
-                    2,
-                    new URL("https://avanadeprojectstorage.blob.core.windows.net/art-machina/src_Self-Portrait_1889.jpg"),
-                    3024,
-                    4032,
-                    new URL("https://avanadeprojectstorage.blob.core.windows.net/art-machina/pro_Self-Portrait_1889.png"),
-                    600,
-                    800,
-                    new URL("https://avanadeprojectstorage.blob.core.windows.net/art-machina/ref_Self-Portrait_1889.jpg"),
-                    3142,
-                    3820,
-                    3,
-                    false));
-            artworks.add(new Artwork(
-                    5,
-                    "Self-Portrait (1889)",
-                    "Possibly van Gogh’s final self-portrait, it shows van Gogh after he mutilated his ear and voluntarily entered an asylum. Van Gogh is instantly recognizable by his reddish hair and beard, his gaunt features, and intense gaze. Van Gogh painted some 36 self-portraits in the space of only ten years. In the painting the attention is focused on the face. His features are hard and emaciated, his green-rimmed eyes seem intransigent and anxious. The dominant colour, a mix of absinth green and pale turquoise finds a counterpoint in its complementary colour, the fiery orange of the beard and hair. The model's immobility contrasts with the undulating hair and beard, echoed and amplified in the hallucinatory arabesques of the background.",
-                    "2018-06-05T11:25:24.551268-07:00",
-                    "Vincent Van Gogh",
-                    1,
-                    3.33,
-                    5,
-                    2,
-                    new URL("https://avanadeprojectstorage.blob.core.windows.net/art-machina/src_Self-Portrait_1889.jpg"),
-                    3024,
-                    4032,
-                    new URL("https://avanadeprojectstorage.blob.core.windows.net/art-machina/pro_Self-Portrait_1889.png"),
-                    600,
-                    800,
-                    new URL("https://avanadeprojectstorage.blob.core.windows.net/art-machina/ref_Self-Portrait_1889.jpg"),
-                    3142,
-                    3820,
-                    3,
-                    false));
-            artworks.add(new Artwork(
-                    5,
-                    "Self-Portrait (1889)",
-                    "Possibly van Gogh’s final self-portrait, it shows van Gogh after he mutilated his ear and voluntarily entered an asylum. Van Gogh is instantly recognizable by his reddish hair and beard, his gaunt features, and intense gaze. Van Gogh painted some 36 self-portraits in the space of only ten years. In the painting the attention is focused on the face. His features are hard and emaciated, his green-rimmed eyes seem intransigent and anxious. The dominant colour, a mix of absinth green and pale turquoise finds a counterpoint in its complementary colour, the fiery orange of the beard and hair. The model's immobility contrasts with the undulating hair and beard, echoed and amplified in the hallucinatory arabesques of the background.",
-                    "2018-06-05T11:25:24.551268-07:00",
-                    "Vincent Van Gogh",
-                    1,
-                    3.33,
-                    5,
-                    2,
-                    new URL("https://avanadeprojectstorage.blob.core.windows.net/art-machina/src_Self-Portrait_1889.jpg"),
-                    3024,
-                    4032,
-                    new URL("https://avanadeprojectstorage.blob.core.windows.net/art-machina/pro_Self-Portrait_1889.png"),
-                    600,
-                    800,
-                    new URL("https://avanadeprojectstorage.blob.core.windows.net/art-machina/ref_Self-Portrait_1889.jpg"),
-                    3142,
-                    3820,
-                    3,
-                    false));
-            artworks.add(new Artwork(
-                    5,
-                    "Self-Portrait (1889)",
-                    "Possibly van Gogh’s final self-portrait, it shows van Gogh after he mutilated his ear and voluntarily entered an asylum. Van Gogh is instantly recognizable by his reddish hair and beard, his gaunt features, and intense gaze. Van Gogh painted some 36 self-portraits in the space of only ten years. In the painting the attention is focused on the face. His features are hard and emaciated, his green-rimmed eyes seem intransigent and anxious. The dominant colour, a mix of absinth green and pale turquoise finds a counterpoint in its complementary colour, the fiery orange of the beard and hair. The model's immobility contrasts with the undulating hair and beard, echoed and amplified in the hallucinatory arabesques of the background.",
-                    "2018-06-05T11:25:24.551268-07:00",
-                    "Vincent Van Gogh",
-                    1,
-                    3.33,
-                    5,
-                    2,
-                    new URL("https://avanadeprojectstorage.blob.core.windows.net/art-machina/src_Self-Portrait_1889.jpg"),
-                    3024,
-                    4032,
-                    new URL("https://avanadeprojectstorage.blob.core.windows.net/art-machina/pro_Self-Portrait_1889.png"),
-                    600,
-                    800,
-                    new URL("https://avanadeprojectstorage.blob.core.windows.net/art-machina/ref_Self-Portrait_1889.jpg"),
-                    3142,
-                    3820,
-                    3,
-                    false));
+        DataManager.getInstance(getActivity()).getArtworkList(new DataProvider.ArtworkListCompletion() {
+            @Override
+            public void complete(List<Artwork> artworkList) {
+                artworks = new ArrayList<>(artworkList);
+                if(galleryListAdapter != null) {
+                    galleryListAdapter.notifyDataSetChanged();
+                }
+            }
 
-        } catch (Exception e) {
-            // do nothing for now
-        }
-
+            @Override
+            public void failure(String failureMessage) {
+                artworks = new ArrayList<>();
+                if(galleryListAdapter != null) {
+                    galleryListAdapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 
 
@@ -194,8 +82,10 @@ public class ArtworkFragment extends Fragment {
         galleryList.setAdapter(galleryListAdapter);
         int spacingInPixels = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
         galleryList.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
+
         return fragmentView;
     }
+
 
     @Override
     public void onPause() {
@@ -221,7 +111,6 @@ public class ArtworkFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
             Artwork artwork = artworks.get(position);
-            viewHolder.gridImage.setDefaultImageResId(R.drawable.ic_baseline_star_border_24px);
             viewHolder.gridImage.setImageUrl("https://avanadeprojectstorage.blob.core.windows.net/art-machina/pro_Self-Portrait_1889.png", DataManager.getInstance(getActivity()).getImageLoader());
             viewHolder.commentCount.setText(artwork.getCommentCount() + "");
             viewHolder.viewCount.setText(artwork.getViewCount() + "");
@@ -233,7 +122,7 @@ public class ArtworkFragment extends Fragment {
             return artworks.size();
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             public NetworkImageView gridImage;
             public TextView viewCount;
             public TextView commentCount;
@@ -241,10 +130,17 @@ public class ArtworkFragment extends Fragment {
 
             public ViewHolder(View view) {
                 super(view);
+                view.setOnClickListener(this);
                 gridImage = view.findViewById(R.id.grid_image);
                 viewCount = view.findViewById(R.id.view_count);
                 commentCount = view.findViewById(R.id.comment_count);
                 rating = view.findViewById(R.id.rating);
+            }
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ArtworkDetailActivity.class);
+                startActivity(intent);
             }
         }
     }
@@ -259,15 +155,17 @@ public class ArtworkFragment extends Fragment {
         @Override
         public void getItemOffsets(Rect outRect, View view,
                                    RecyclerView parent, RecyclerView.State state) {
-            outRect.left = space;
-            outRect.right = space;
-            outRect.bottom = space;
+
+            outRect.top = space;
+            outRect.bottom = 0;
 
             // Add top margin only for the first item to avoid double space between items
-            if (parent.getChildLayoutPosition(view) == 0) {
-                outRect.top = space;
+            if (parent.getChildLayoutPosition(view) % 2 == 1) {
+                outRect.left = space / 2;
+                outRect.right = space;
             } else {
-                outRect.top = 0;
+                outRect.left = space;
+                outRect.right = space / 2;
             }
         }
     }

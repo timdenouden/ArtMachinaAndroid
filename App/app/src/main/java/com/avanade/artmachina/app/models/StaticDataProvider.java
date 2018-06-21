@@ -1,5 +1,7 @@
 package com.avanade.artmachina.app.models;
 
+import android.util.Log;
+
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -214,6 +216,8 @@ public class StaticDataProvider implements DataProvider {
         } catch (Exception e) {
 
         }
+
+        Log.d(this.getClass().getSimpleName(), artwork.getAuthor());
         completion.complete(artwork);
     }
 
