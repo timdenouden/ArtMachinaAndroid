@@ -69,7 +69,7 @@ public class DataManager {
         dataProvider.getArtworkList("token", completion);
     }
 
-    public void getArtwork(int id, DataProvider.ArtworkCompletion completion) {
-
+    public void getArtwork(String id, DataProvider.ArtworkCompletion completion) {
+        dataProvider.getArtwork("token", id, completion);
     }
 }

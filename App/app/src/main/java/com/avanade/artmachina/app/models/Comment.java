@@ -28,6 +28,10 @@ public class Comment {
         return editable;
     }
 
+    public void setReviewerName(String reviewerName) {
+        this.reviewerName = reviewerName;
+    }
+
     public void setContent(String content) {
         this.content = content;
     }

@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.net.URL;
 
 public class Artwork {
+    public static final String KEY_NAME_ID = "artworkId";
 
     private String id;
 
@@ -48,6 +49,29 @@ public class Artwork {
     private int myRating;
 
     private boolean isBookmarked;
+
+    public Artwork(String id, String title, String description, String updatedAt, String author, int viewCount, double rating, int ratingCount, int commentCount, URL sourceImageUrl, int sourceImageWidth, int sourceImageHeight, URL processedImageUrl, int processedImageWidth, int processedImageHeight, URL referenceImageUrl, int referenceImageWidth, int referenceImageHeight, int myRating, boolean isBookmarked) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.updatedAt = updatedAt;
+        this.author = author;
+        this.viewCount = viewCount;
+        this.rating = rating;
+        this.ratingCount = ratingCount;
+        this.commentCount = commentCount;
+        this.sourceImageUrl = sourceImageUrl;
+        this.sourceImageWidth = sourceImageWidth;
+        this.sourceImageHeight = sourceImageHeight;
+        this.processedImageUrl = processedImageUrl;
+        this.processedImageWidth = processedImageWidth;
+        this.processedImageHeight = processedImageHeight;
+        this.referenceImageUrl = referenceImageUrl;
+        this.referenceImageWidth = referenceImageWidth;
+        this.referenceImageHeight = referenceImageHeight;
+        this.myRating = myRating;
+        this.isBookmarked = isBookmarked;
+    }
 
     public String getId() {
         return id;

@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -141,7 +142,33 @@ public class AzureDataProvider implements DataProvider {
 
     @Override
     public void getArtwork(String token, String artworkId, ArtworkCompletion completion) {
+        Artwork artwork = null;
+        try {
+            artwork = new Artwork(
+                    "id",
+                    "Self-Portrait (1889)",
+                    "Possibly van Gogh’s final self-portrait, it shows van Gogh after he mutilated his ear and voluntarily entered an asylum. Van Gogh is instantly recognizable by his reddish hair and beard, his gaunt features, and intense gaze. Van Gogh painted some 36 self-portraits in the space of only ten years. In the painting the attention is focused on the face. His features are hard and emaciated, his green-rimmed eyes seem intransigent and anxious. The dominant colour, a mix of absinth green and pale turquoise finds a counterpoint in its complementary colour, the fiery orange of the beard and hair. The model's immobility contrasts with the undulating hair and beard, echoed and amplified in the hallucinatory arabesques of the background.",
+                    "2018-06-05T11:25:24.551268-07:00",
+                    "Vincent Van Gogh",
+                    1,
+                    3.33,
+                    5,
+                    2,
+                    new URL("https://avanadeprojectstorage.blob.core.windows.net/art-machina/src_Self-Portrait_1889.jpg"),
+                    3024,
+                    4032,
+                    new URL("https://avanadeprojectstorage.blob.core.windows.net/art-machina/pro_Self-Portrait_1889.png"),
+                    600,
+                    800,
+                    new URL("https://avanadeprojectstorage.blob.core.windows.net/art-machina/ref_Self-Portrait_1889.jpg"),
+                    3142,
+                    3820,
+                    3,
+                    false);
+        } catch (Exception e) {
 
+        }
+        completion.complete(artwork);
     }
 
     @Override

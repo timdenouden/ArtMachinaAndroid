@@ -1,32 +1,29 @@
 package com.avanade.artmachina.app.fragments;
 
 
-import android.content.Context;
-import android.graphics.Bitmap;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.LruCache;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-import com.android.volley.toolbox.Volley;
 import com.avanade.artmachina.R;
+import com.avanade.artmachina.app.activities.ArtworkDetailActivity;
 import com.avanade.artmachina.app.models.Artwork;
 import com.avanade.artmachina.app.models.DataManager;
+import com.avanade.artmachina.app.models.DataProvider;
+import com.avanade.artmachina.app.models.HttpResponseError;
 
-import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,9 +31,8 @@ import java.util.ArrayList;
 public class ArtworkFragment extends Fragment {
     public static final int NUM_COLUMBS = 2;
 
-    private ArrayList<Artwork> artworks;
     private RecyclerView galleryList;
-    private RecyclerView.Adapter galleryListAdapter;
+    private GalleryListAdapter galleryListAdapter;
     private RecyclerView.LayoutManager galleryListLayoutManager;
 
     public ArtworkFragment() {
@@ -46,10 +42,21 @@ public class ArtworkFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        artworks = new ArrayList<>();
-        // debug usage
-        DataManager.getInstance(this.getContext());
+        DataManager.getInstance(getActivity()).getArtworkList(new DataProvider.ArtworkListCompletion() {
+            @Override
+            public void complete(List<Artwork> artworkList) {
+                if(galleryListAdapter != null) {
+                    galleryListAdapter.setArtworks(new ArrayList<>(artworkList));
+                }
+            }
 
+            @Override
+            public void failure(HttpResponseError responseError) {
+                if(galleryListAdapter != null) {
+                    galleryListAdapter.setArtworks(null);
+                }
+            }
+        });
     }
 
 
@@ -59,63 +66,90 @@ public class ArtworkFragment extends Fragment {
         View fragmentView = inflater.inflate(R.layout.fragment_artwork, container, false);
         galleryList = fragmentView.findViewById(R.id.gallery_list);
         galleryList.setHasFixedSize(true);
-        galleryListLayoutManager = new GridLayoutManager(getContext(), NUM_COLUMBS);
+        galleryListLayoutManager = new StaggeredGridLayoutManager(NUM_COLUMBS, StaggeredGridLayoutManager.VERTICAL);
         galleryList.setLayoutManager(galleryListLayoutManager);
-        galleryListAdapter = new GalleryListAdapter(artworks);
+        galleryListAdapter = new GalleryListAdapter();
         galleryList.setAdapter(galleryListAdapter);
         int spacingInPixels = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
         galleryList.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
+
         return fragmentView;
     }
+
 
     @Override
     public void onPause() {
         super.onPause();
     }
 
-    private class GalleryListAdapter extends RecyclerView.Adapter<GalleryListAdapter.ViewHolder> {
+    private class GalleryListAdapter extends RecyclerView.Adapter<GalleryListAdapter.ArtworkViewHolder> {
 
         private ArrayList<Artwork> artworks;
+
+        public GalleryListAdapter() {
+
+        }
 
         public GalleryListAdapter(ArrayList<Artwork> artworks) {
             this.artworks = artworks;
         }
 
+        public void setArtworks(ArrayList<Artwork> artworks) {
+            this.artworks = artworks;
+            notifyDataSetChanged();
+        }
+
         @NonNull
         @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public ArtworkViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.grid_item_artwork, parent, false);
-            ViewHolder viewHolder = new GalleryListAdapter.ViewHolder(view);
-            return viewHolder;
+            ArtworkViewHolder artworkViewHolder = new ArtworkViewHolder(view);
+            return artworkViewHolder;
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(@NonNull ArtworkViewHolder artworkViewHolder, int position) {
             Artwork artwork = artworks.get(position);
-            viewHolder.gridImage.setDefaultImageResId(R.drawable.ic_baseline_star_border_24px);
-            viewHolder.gridImage.setImageUrl("https://avanadeprojectstorage.blob.core.windows.net/art-machina/pro_Self-Portrait_1889.png", DataManager.getInstance(getActivity()).getImageLoader());
-            viewHolder.commentCount.setText(artwork.getCommentCount() + "");
-            viewHolder.viewCount.setText(artwork.getViewCount() + "");
-            viewHolder.rating.setText(String.format("%.1f", artwork.getRating()));
+            artworkViewHolder.setArtworkId(artwork.getId());
+            artworkViewHolder.gridImage.setImageUrl(artwork.getProcessedImageUrl().toString(), DataManager.getInstance(getActivity()).getImageLoader());
+            artworkViewHolder.commentCount.setText(artwork.getCommentCount() + "");
+            artworkViewHolder.viewCount.setText(artwork.getViewCount() + "");
+            artworkViewHolder.rating.setText(String.format("%.1f", artwork.getRating()));
         }
 
         @Override
         public int getItemCount() {
+            if(artworks == null) {
+                return 0;
+            }
             return artworks.size();
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public class ArtworkViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             public NetworkImageView gridImage;
             public TextView viewCount;
             public TextView commentCount;
             public TextView rating;
+            private String artworkId;
 
-            public ViewHolder(View view) {
+            public ArtworkViewHolder(View view) {
                 super(view);
+                view.setOnClickListener(this);
                 gridImage = view.findViewById(R.id.grid_image);
                 viewCount = view.findViewById(R.id.view_count);
                 commentCount = view.findViewById(R.id.comment_count);
                 rating = view.findViewById(R.id.rating);
+            }
+
+            public void setArtworkId(String artworkId) {
+                this.artworkId = artworkId;
+            }
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ArtworkDetailActivity.class);
+                intent.putExtra(Artwork.KEY_NAME_ID, artworkId);
+                startActivity(intent);
             }
         }
     }
@@ -130,16 +164,12 @@ public class ArtworkFragment extends Fragment {
         @Override
         public void getItemOffsets(Rect outRect, View view,
                                    RecyclerView parent, RecyclerView.State state) {
-            outRect.left = space;
-            outRect.right = space;
-            outRect.bottom = space;
 
-            // Add top margin only for the first item to avoid double space between items
-            if (parent.getChildLayoutPosition(view) == 0) {
-                outRect.top = space;
-            } else {
-                outRect.top = 0;
-            }
+            outRect.top = space;
+            outRect.bottom = 0;
+
+            outRect.left = space / 2;
+            outRect.right = space / 2;
         }
     }
 }
