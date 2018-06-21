@@ -2,6 +2,7 @@ package com.avanade.artmachina.app.models;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.util.LruCache;
 
 import com.android.volley.Cache;
@@ -43,7 +44,10 @@ public class DataManager {
         });
 
         // Note: this is just for testing
-        dataProvider = new StaticDataProvider();
+        // dataProvider = new StaticDataProvider();
+        dataProvider = new AzureDataProvider(requestQueue);
+
+
     }
 
     public static DataManager getInstance(Context context) {

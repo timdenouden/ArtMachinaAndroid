@@ -4,16 +4,15 @@ import com.google.gson.annotations.SerializedName;
 
 public class Comment {
 
-    private int id;
+    private String id;
 
-    @SerializedName("reviewer_name")
     private String reviewerName;
 
     private String content;
 
     private boolean editable;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

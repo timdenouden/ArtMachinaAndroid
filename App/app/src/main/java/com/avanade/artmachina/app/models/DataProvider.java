@@ -38,13 +38,12 @@ public interface DataProvider {
     void getArtworkList(String token, ArtworkListCompletion completion);
     void getCommentList(String token, CommentListCompletion completion);
     void postComment(String token, String content);
-    void deleteComment(String token, int commentId);
-    void reportComment(String token, int commentId);
-    void getArtwork(String token, int artworkId, ArtworkCompletion completion);
-    void updateBookmark(String token, int artworkId, boolean newBookmarkState);
-    void updateRating(String token, int artworkId, int newRating);
+    void deleteComment(String token, String commentId);
+    void reportComment(String token, String commentId);
+    void getArtwork(String token, String artworkId, ArtworkCompletion completion);
+    void updateBookmark(String token, String artworkId, boolean newBookmarkState);
+    void updateRating(String token, String artworkId, int newRating);
     void getBookmarkList(String token, ArtworkListCompletion completion);
     void getPasswordResetUrl(UrlCompletion completion);
-
 
 }

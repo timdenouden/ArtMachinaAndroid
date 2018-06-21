@@ -9,10 +9,8 @@ public class User {
 
     private String password;
 
-    @SerializedName("first_name")
     private String firstName;
 
-    @SerializedName("last_name")
     private String lastName;
 
     private String title;

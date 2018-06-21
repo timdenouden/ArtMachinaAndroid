@@ -6,85 +6,50 @@ import java.net.URL;
 
 public class Artwork {
 
-    private int id;
+    private String id;
 
     private String title;
 
     private String description;
 
-    @SerializedName("updated_at")
     private String updatedAt;
 
     private String author;
 
-    @SerializedName("view_count")
     private int viewCount;
 
     private double rating;
 
-    @SerializedName("rating_count")
     private int ratingCount;
 
-    @SerializedName("comment_count")
     private int commentCount;
 
-    @SerializedName("source_image_url")
     private URL sourceImageUrl;
 
-    @SerializedName("source_image_width")
     private int sourceImageWidth;
 
-    @SerializedName("source_image_height")
     private int sourceImageHeight;
 
-    @SerializedName("processed_image_url")
+    @SerializedName("afterImageUrl")
     private URL processedImageUrl;
 
-    @SerializedName("processed_image_width")
+    @SerializedName("width")
     private int processedImageWidth;
 
-    @SerializedName("processed_image_height")
+    @SerializedName("height")
     private int processedImageHeight;
 
-    @SerializedName("reference_image_url")
     private URL referenceImageUrl;
 
-    @SerializedName("reference_image_width")
     private int referenceImageWidth;
 
-    @SerializedName("reference_image_height")
     private int referenceImageHeight;
 
-    @SerializedName("my_rating")
     private int myRating;
 
-    @SerializedName("is_bookmarked")
     private boolean isBookmarked;
 
-    public Artwork(int id, String title, String description, String updatedAt, String author, int viewCount, double rating, int ratingCount, int commentCount, URL sourceImageUrl, int sourceImageWidth, int sourceImageHeight, URL processedImageUrl, int processedImageWidth, int processedImageHeight, URL referenceImageUrl, int referenceImageWidth, int referenceImageHeight, int myRating, boolean isBookmarked) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.updatedAt = updatedAt;
-        this.author = author;
-        this.viewCount = viewCount;
-        this.rating = rating;
-        this.ratingCount = ratingCount;
-        this.commentCount = commentCount;
-        this.sourceImageUrl = sourceImageUrl;
-        this.sourceImageWidth = sourceImageWidth;
-        this.sourceImageHeight = sourceImageHeight;
-        this.processedImageUrl = processedImageUrl;
-        this.processedImageWidth = processedImageWidth;
-        this.processedImageHeight = processedImageHeight;
-        this.referenceImageUrl = referenceImageUrl;
-        this.referenceImageWidth = referenceImageWidth;
-        this.referenceImageHeight = referenceImageHeight;
-        this.myRating = myRating;
-        this.isBookmarked = isBookmarked;
-    }
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
