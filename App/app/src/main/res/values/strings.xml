@@ -5,7 +5,17 @@
     <string name="title_gallery_bookmarks">Bookmarks</string>
     <string name="title_gallery_settings">Settings</string>
 
+    <string-array name ="array_artwork_titles">
+        <item>Starry Night Over the Rhone</item>
+        <item>The Great Wave</item>
+        <item>Starry Night</item>
+        <item>Hollywood</item>
+        <item>Irises</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="content_description_views_icon">views</string>
+    <string name="app_label">Search</string>
+    <string name="search_hint">Search Artwork</string>
 </resources>
