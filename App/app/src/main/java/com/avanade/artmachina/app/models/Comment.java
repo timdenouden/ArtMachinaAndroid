@@ -6,9 +6,12 @@ public class Comment {
 
     private String id;
 
+    @SerializedName("reviewer")
     private String reviewerName;
 
     private String content;
+
+    private String artworkId;
 
     private boolean editable;
 
@@ -28,11 +31,11 @@ public class Comment {
         return editable;
     }
 
-    public void setReviewerName(String reviewerName) {
-        this.reviewerName = reviewerName;
-    }
-
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public void setArtworkId(String artworkId) {
+        this.artworkId = artworkId;
     }
 }

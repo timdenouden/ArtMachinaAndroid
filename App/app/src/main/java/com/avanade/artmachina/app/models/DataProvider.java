@@ -31,18 +31,22 @@ public interface DataProvider {
         void complete(String url);
     }
 
+    interface EmptyCompletion extends FailureListener {
+        void complete();
+    }
+
     void login(User userCredential, AuthCompletion completion);
     void register(User newUser, AuthCompletion completion);
     void getProfile(String token, ProfileCompletion completion);
     void updateProfile(String token, User profile, ProfileCompletion completion);
     void getArtworkList(String token, ArtworkListCompletion completion);
-    void getCommentList(String token, CommentListCompletion completion);
-    void postComment(String token, String content);
-    void deleteComment(String token, String commentId);
-    void reportComment(String token, String commentId);
+    void getCommentList(String token, String artworkId, CommentListCompletion completion);
+    void postComment(String token, String artworkId, String content, EmptyCompletion completion);
+    void deleteComment(String token, String commentId, EmptyCompletion completion);
+    void reportComment(String token, String commentId, EmptyCompletion completion);
     void getArtwork(String token, String artworkId, ArtworkCompletion completion);
-    void updateBookmark(String token, String artworkId, boolean newBookmarkState);
-    void updateRating(String token, String artworkId, int newRating);
+    void updateBookmark(String token, String artworkId, boolean newBookmarkState, EmptyCompletion completion);
+    void updateRating(String token, String artworkId, int newRating, EmptyCompletion completion);
     void getBookmarkList(String token, ArtworkListCompletion completion);
     void getPasswordResetUrl(UrlCompletion completion);
 
