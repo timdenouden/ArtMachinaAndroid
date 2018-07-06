@@ -1,14 +1,21 @@
 package com.avanade.artmachina.app.fragments;
 
 
+import android.app.SearchManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
@@ -18,16 +25,15 @@ import com.avanade.artmachina.app.models.DataManager;
 import com.avanade.artmachina.app.models.DataProvider;
 import com.avanade.artmachina.app.models.HttpResponseError;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ServiceConfigurationError;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SearchFragment extends Fragment {
     private RecyclerView searchList;
+    private EditText editText;
     private SearchListAdapter searchListAdapter;
     private RecyclerView.LayoutManager searchListLayoutManager;
 
@@ -55,6 +61,33 @@ public class SearchFragment extends Fragment {
         });
     }
 
+    public void doSearch(final String query){
+        DataManager.getInstance(getContext()).getArtworkList(new DataProvider.ArtworkListCompletion() {
+            @Override
+            public void complete(List<Artwork> artworkList) {
+                //Log.d("test", artworkList.size() + " ");
+                if(searchListAdapter != null) {
+                    searchListAdapter.setFilteredArtworks(new ArrayList<Artwork>(artworkList), query);
+                }
+            }
+
+            @Override
+            public void failure(HttpResponseError error) {
+
+            }
+        });
+
+
+
+    }
+
+    public boolean onCreateOptionsMenu(LayoutInflater inflater, ViewGroup container,
+                                       Bundle savedInstanceState) {
+        View fragmentView = inflater.inflate(R.layout.fragment_search, container, false);
+
+        return true;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -65,9 +98,18 @@ public class SearchFragment extends Fragment {
         searchList.setLayoutManager(searchListLayoutManager);
         searchListAdapter = new SearchListAdapter();
         searchList.setAdapter(searchListAdapter);
-        //int spacingInPixels = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
-        //galleryList.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
 
+        editText = fragmentView.findViewById(R.id.editText);
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if(i == EditorInfo.IME_ACTION_SEARCH) {
+                    doSearch(editText.getText().toString());
+                    return true;
+                }
+                return false;
+            }
+        });
         return fragmentView;
     }
 
@@ -84,6 +126,19 @@ public class SearchFragment extends Fragment {
 
         public void setArtworks(ArrayList<Artwork> artworks) {
             this.artworks = artworks;
+            notifyDataSetChanged();
+        }
+
+        public void setFilteredArtworks(ArrayList<Artwork> artworks, String query) {
+            this.artworks.clear();
+
+            for(int i = 0; i < artworks.size(); i++){
+                //Log.d("test", artworks.get(i).getTitle().contains(query) + " ");
+                if(artworks.get(i).getTitle().toLowerCase().contains(query.toLowerCase())){
+                    this.artworks.add(artworks.get(i));
+                }
+            }
+            //Log.d("test", artworks.size() + " ");
             notifyDataSetChanged();
         }
 
@@ -121,5 +176,7 @@ public class SearchFragment extends Fragment {
             }
         }
     }
+
+
 
 }
