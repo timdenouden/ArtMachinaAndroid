@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    tools:context=".app.activities.RegisterActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/register_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.5"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/scrollView2"
+        app:srcCompat="@drawable/launch_image" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:gravity="center_horizontal"
+                android:text="Register"
+                android:textColor="@color/colorTextLight"
+                android:textSize="36sp"
+                tools:layout_editor_absoluteX="309dp"
+                tools:layout_editor_absoluteY="178dp" />
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:ems="10"
+                android:hint="EMAIL"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/colorTextLight"
+                android:textColorHint="@color/colorTextLight" />
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="PASSWORD"
+                android:inputType="textPassword"
+                android:textColor="@color/colorTextLight"
+                android:textColorHint="@color/colorTextLight" />
+
+            <EditText
+                android:id="@+id/fname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="FIRST NAME"
+                android:inputType="text"
+                android:textColor="@color/colorTextLight"
+                android:textColorHint="@color/colorTextLight" />
+
+            <EditText
+                android:id="@+id/lname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="LAST NAME"
+                android:inputType="text"
+                android:textColor="@color/colorTextLight"
+                android:textColorHint="@color/colorTextLight" />
+
+            <EditText
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="TITLE (OPTIONAL)"
+                android:inputType="text"
+                android:textColor="@color/colorTextLight"
+                android:textColorHint="@color/colorTextLight" />
+
+            <EditText
+                android:id="@+id/company"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="COMPANY (OPTIONAL)"
+                android:inputType="text"
+                android:textColor="@color/colorTextLight"
+                android:textColorHint="@color/colorTextLight" />
+
+            <Button
+                android:id="@+id/create_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Create Account"
+                android:textColor="@color/colorTextLight"
+                android:theme="@style/RegisterButton" />
+
+            <Button
+                android:id="@+id/cancel_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:textColor="@color/colorTextLight"
+                android:theme="@style/CancelButton" />
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

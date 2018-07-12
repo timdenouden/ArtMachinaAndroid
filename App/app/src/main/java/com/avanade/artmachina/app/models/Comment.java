@@ -23,6 +23,10 @@ public class Comment {
         return reviewerName;
     }
 
+    public void setReviewerName(String reviewerName) {
+        this.reviewerName = reviewerName;
+    }
+
     public String getContent() {
         return content;
     }

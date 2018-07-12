@@ -6,5 +6,20 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">@color/colorTextLight</item>
+        <item name="colorControlActivated">@color/colorTextLight</item>
+        <item name="colorControlHighlight">@color/colorTextLight</item>
+    </style>
+
+    <style name="LoginButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/colorLoginButton</item>
+    </style>
+
+    <style name="RegisterButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/colorRegisterButton</item>
+    </style>
+
+    <style name="CancelButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/colorCancelButton</item>
     </style>
 </resources>

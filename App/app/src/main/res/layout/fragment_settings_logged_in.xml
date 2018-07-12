@@ -14,6 +14,58 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="24dp"
+                android:hint="First Name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorSeporatorLine" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="24dp"
+                android:hint="Last Name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorSeporatorLine" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="24dp"
+                android:hint="Title"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorSeporatorLine" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="24dp"
+                android:hint="Company"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorSeporatorLine" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="56dp"

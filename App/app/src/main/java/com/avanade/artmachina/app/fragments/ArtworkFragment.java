@@ -42,21 +42,6 @@ public class ArtworkFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DataManager.getInstance(getActivity()).getArtworkList(new DataProvider.ArtworkListCompletion() {
-            @Override
-            public void complete(List<Artwork> artworkList) {
-                if(galleryListAdapter != null) {
-                    galleryListAdapter.setArtworks(new ArrayList<>(artworkList));
-                }
-            }
-
-            @Override
-            public void failure(HttpResponseError responseError) {
-                if(galleryListAdapter != null) {
-                    galleryListAdapter.setArtworks(null);
-                }
-            }
-        });
     }
 
 
@@ -74,6 +59,26 @@ public class ArtworkFragment extends Fragment {
         galleryList.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
 
         return fragmentView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        DataManager.getInstance(getActivity()).getArtworkList(new DataProvider.ArtworkListCompletion() {
+            @Override
+            public void complete(List<Artwork> artworkList) {
+                if(galleryListAdapter != null) {
+                    galleryListAdapter.setArtworks(new ArrayList<>(artworkList));
+                }
+            }
+
+            @Override
+            public void failure(HttpResponseError responseError) {
+                if(galleryListAdapter != null) {
+                    galleryListAdapter.setArtworks(null);
+                }
+            }
+        });
     }
 
 

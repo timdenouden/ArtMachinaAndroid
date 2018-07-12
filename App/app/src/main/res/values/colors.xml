@@ -9,4 +9,7 @@
     <color name="colorSeporatorLine">#1f000000</color>
     <color name="colorBookmark">#B00020</color>
     <color name="colorStars">#ffc107</color>
+    <color name="colorLoginButton">#0da855</color>
+    <color name="colorRegisterButton">#0d6fa8</color>
+    <color name="colorCancelButton">#B00020</color>
 </resources>

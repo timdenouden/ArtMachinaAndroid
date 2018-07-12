@@ -60,7 +60,7 @@ public class ArtworkDetailActivity extends AppCompatActivity {
         artworkDetailAdapter = new ArtworkDetailAdapter();
         detailList.setAdapter(artworkDetailAdapter);
 
-        String artworkId = "id"; //getIntent().getStringExtra(Artwork.KEY_NAME_ID);
+        String artworkId = getIntent().getStringExtra(Artwork.KEY_NAME_ID);
         DataManager.getInstance(this).getArtwork(artworkId, new DataProvider.ArtworkCompletion() {
             @Override
             public void complete(Artwork artwork) {

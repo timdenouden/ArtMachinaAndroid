@@ -5,7 +5,7 @@
     <string name="title_gallery_bookmarks">Bookmarks</string>
     <string name="title_gallery_settings">Settings</string>
 
-    <string-array name ="array_artwork_titles">
+    <string-array name="array_artwork_titles">
         <item>Starry Night Over the Rhone</item>
         <item>The Great Wave</item>
         <item>Starry Night</item>
