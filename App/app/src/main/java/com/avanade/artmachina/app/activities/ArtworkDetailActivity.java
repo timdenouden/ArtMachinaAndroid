@@ -76,11 +76,11 @@ public class ArtworkDetailActivity extends AppCompatActivity {
         // This needs to be wrapped up in the DataManager
         ArrayList<Comment> debugComments = new ArrayList<>();
         Comment comment = new Comment();
-        comment.setReviewerName("Tester McTesterson");
+        //comment.setReviewerName("Tester McTesterson");
         comment.setContent("Wow that is neat!");
         debugComments.add(comment);
         Comment comment2 = new Comment();
-        comment2.setReviewerName("Testerson McTester");
+        //comment2.setReviewerName("Testerson McTester");
         comment2.setContent("I too think this is neat!");
         debugComments.add(comment2);
         artworkDetailAdapter.setComments(debugComments);
