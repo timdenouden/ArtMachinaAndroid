@@ -18,4 +18,6 @@
     <string name="content_description_views_icon">views</string>
     <string name="app_label">Search</string>
     <string name="search_hint">Search Artwork</string>
+
+    <string name="share_label">Share</string>
 </resources>
