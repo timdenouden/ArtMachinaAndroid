@@ -1,6 +1,9 @@
 package com.avanade.artmachina.app.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
@@ -15,10 +18,14 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.avanade.artmachina.R;
@@ -30,12 +37,16 @@ import com.avanade.artmachina.app.models.HttpResponseError;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ArtworkDetailActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     RecyclerView detailList;
     ArtworkDetailAdapter artworkDetailAdapter;
+    String artworkId = "";
+    EditText newCommentEditText;
+    ImageButton addCommentButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,30 +71,44 @@ public class ArtworkDetailActivity extends AppCompatActivity {
         artworkDetailAdapter = new ArtworkDetailAdapter();
         detailList.setAdapter(artworkDetailAdapter);
 
-        String artworkId = getIntent().getStringExtra(Artwork.KEY_NAME_ID);
-        DataManager.getInstance(this).getArtwork(artworkId, new DataProvider.ArtworkCompletion() {
-            @Override
-            public void complete(Artwork artwork) {
-                artworkDetailAdapter.setArtwork(artwork);
-            }
+        artworkId = getIntent().getStringExtra(Artwork.KEY_NAME_ID);
 
+        newCommentEditText = findViewById(R.id.new_comment);
+        addCommentButton = findViewById(R.id.add_comment);
+        addCommentButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void failure(HttpResponseError responseError) {
+            public void onClick(View v) {
+                String comment = newCommentEditText.getText().toString();
+                if(comment.length() == 0) {
+                    Toast.makeText(ArtworkDetailActivity.this, "No comment was entered", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(DataManager.getInstance(ArtworkDetailActivity.this).isLoggedIn()) {
+                    DataManager.getInstance(ArtworkDetailActivity.this).addComment(artworkId, comment, new DataProvider.EmptyCompletion() {
+                        @Override
+                        public void complete() {
+                            updateComments();
+                            newCommentEditText.setText("");
+                            View view = ArtworkDetailActivity.this.getCurrentFocus();
+                            if (view != null) {
+                                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                            }
+                        }
 
+                        @Override
+                        public void failure(HttpResponseError error) {
+                            Toast.makeText(ArtworkDetailActivity.this, "There was an error adding your comment", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                else {
+                    Toast.makeText(ArtworkDetailActivity.this, "Please log in to make a comment", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(ArtworkDetailActivity.this, LogInActivity.class);
+                    startActivity(intent);
+                }
             }
         });
-
-        // This needs to be wrapped up in the DataManager
-        ArrayList<Comment> debugComments = new ArrayList<>();
-        Comment comment = new Comment();
-        //comment.setReviewerName("Tester McTesterson");
-        comment.setContent("Wow that is neat!");
-        debugComments.add(comment);
-        Comment comment2 = new Comment();
-        //comment2.setReviewerName("Testerson McTester");
-        comment2.setContent("I too think this is neat!");
-        debugComments.add(comment2);
-        artworkDetailAdapter.setComments(debugComments);
     }
 
     @Override
@@ -96,6 +121,41 @@ public class ArtworkDetailActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        DataManager.getInstance(this).getArtwork(artworkId, new DataProvider.ArtworkCompletion() {
+            @Override
+            public void complete(Artwork artwork) {
+                artworkDetailAdapter.setArtwork(artwork);
+            }
+
+            @Override
+            public void failure(HttpResponseError responseError) {
+                Toast.makeText(ArtworkDetailActivity.this, "There was an error fetching Artwork details", Toast.LENGTH_SHORT).show();
+                onBackPressed();
+            }
+        });
+
+        updateComments();
+    }
+
+    private void updateComments() {
+        DataManager.getInstance(this).getComments(artworkId, new DataProvider.CommentListCompletion() {
+            @Override
+            public void complete(List<Comment> commentList) {
+                Log.d("comments", "" + commentList.size());
+                artworkDetailAdapter.setComments(new ArrayList<>(commentList));
+            }
+
+            @Override
+            public void failure(HttpResponseError error) {
+                Toast.makeText(ArtworkDetailActivity.this, "There was an error fetching Artwork comments", Toast.LENGTH_SHORT).show();
+                artworkDetailAdapter.setComments(null);
+            }
+        });
     }
 
     private class ArtworkDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
