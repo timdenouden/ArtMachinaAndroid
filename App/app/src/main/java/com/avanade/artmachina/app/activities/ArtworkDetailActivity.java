@@ -53,7 +53,7 @@ public class ArtworkDetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.getNavigationIcon().setColorFilter(ContextCompat.getColor(this, R.color.colorTextLight), PorterDuff.Mode.SRC_ATOP);
-
+        /*
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -63,16 +63,16 @@ public class ArtworkDetailActivity extends AppCompatActivity {
                 sendIntent.setType("text/plain");
                 startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.share_label)));
 
-                /*
+
                 Intent shareIntent = new Intent();
                 shareIntent.setAction(Intent.ACTION_SEND);
                 shareIntent.putExtra(Intent.EXTRA_STREAM, uriToImage);
                 shareIntent.setType("image/jpeg");
                 startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
-                */
+
                 return false;
             }
-        });
+        }); */
 
         detailList = findViewById(R.id.detail_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -85,8 +85,28 @@ public class ArtworkDetailActivity extends AppCompatActivity {
         String artworkId = "id"; //getIntent().getStringExtra(Artwork.KEY_NAME_ID);
         DataManager.getInstance(this).getArtwork(artworkId, new DataProvider.ArtworkCompletion() {
             @Override
-            public void complete(Artwork artwork) {
+            public void complete(final Artwork artwork) {
                 artworkDetailAdapter.setArtwork(artwork);
+
+                toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        Intent sendIntent = new Intent();
+                        sendIntent.setAction(Intent.ACTION_SEND);
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, artwork.getProcessedImageUrl());
+                        sendIntent.setType("text/plain");
+                        startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.share_label)));
+
+                /*
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_STREAM, uriToImage);
+                shareIntent.setType("image/jpeg");
+                startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
+                */
+                        return false;
+                    }
+                });
             }
 
             @Override
