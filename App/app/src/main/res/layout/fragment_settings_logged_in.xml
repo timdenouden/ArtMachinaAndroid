@@ -5,136 +5,172 @@
     android:layout_height="match_parent"
     tools:context=".app.fragments.SettingsFragment">
 
-    <ScrollView
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/settings_swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <EditText
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="24dp"
-                android:hint="First Name"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:animateLayoutChanges="true">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorSeporatorLine" />
+                <LinearLayout
+                    android:id="@+id/user_info_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:orientation="vertical"
+                    android:visibility="visible">
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="24dp"
-                android:hint="Last Name"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                    <EditText
+                        android:id="@+id/settings_first_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:gravity="center_vertical"
+                        android:hint="First Name"
+                        android:paddingLeft="24dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorSeporatorLine" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorSeporatorLine" />
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="24dp"
-                android:hint="Title"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                    <EditText
+                        android:id="@+id/settings_last_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:gravity="center_vertical"
+                        android:hint="Last Name"
+                        android:paddingLeft="24dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorSeporatorLine" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorSeporatorLine" />
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="24dp"
-                android:hint="Company"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                    <EditText
+                        android:id="@+id/settings_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:gravity="center_vertical"
+                        android:hint="Title"
+                        android:paddingLeft="24dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorSeporatorLine" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorSeporatorLine" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="24dp"
-                android:text="About"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                    <EditText
+                        android:id="@+id/settings_company"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:gravity="center_vertical"
+                        android:hint="Company"
+                        android:paddingLeft="24dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorSeporatorLine" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorSeporatorLine" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="24dp"
-                android:text="Acknowledgements"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                    <Button
+                        android:id="@+id/settings_save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="SAVE"
+                        android:textColor="@color/colorTextLight"
+                        android:theme="@style/RegisterButton" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorSeporatorLine" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorSeporatorLine" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="24dp"
-                android:text="Avanade"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorSeporatorLine" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="24dp"
+                    android:text="About"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="24dp"
-                android:text="Clear Search History"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorSeporatorLine" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorSeporatorLine" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="24dp"
+                    android:text="Acknowledgements"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-            <TextView
-                android:id="@+id/login"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="24dp"
-                android:text="Log In"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorSeporatorLine" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorSeporatorLine" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="24dp"
+                    android:text="Avanade"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-        </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorSeporatorLine" />
 
-    </ScrollView>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="24dp"
+                    android:text="Clear Search History"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorSeporatorLine" />
+
+                <TextView
+                    android:id="@+id/login"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="24dp"
+                    android:text="Log In"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorSeporatorLine" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </FrameLayout>
 

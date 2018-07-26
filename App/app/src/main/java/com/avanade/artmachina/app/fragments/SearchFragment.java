@@ -42,53 +42,6 @@ public class SearchFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        DataManager.getInstance(getContext()).getArtworkList(new DataProvider.ArtworkListCompletion() {
-            @Override
-            public void complete(List<Artwork> artworkList) {
-                if(searchListAdapter != null) {
-                    searchListAdapter.setArtworks(new ArrayList<Artwork>(artworkList));
-                }
-            }
-
-            @Override
-            public void failure(HttpResponseError error) {
-                if(searchListAdapter != null) {
-                    searchListAdapter.setArtworks(null);
-                }
-            }
-        });
-    }
-
-    public void doSearch(final String query){
-        DataManager.getInstance(getContext()).getArtworkList(new DataProvider.ArtworkListCompletion() {
-            @Override
-            public void complete(List<Artwork> artworkList) {
-                //Log.d("test", artworkList.size() + " ");
-                if(searchListAdapter != null) {
-                    searchListAdapter.setFilteredArtworks(new ArrayList<Artwork>(artworkList), query);
-                }
-            }
-
-            @Override
-            public void failure(HttpResponseError error) {
-
-            }
-        });
-
-
-
-    }
-
-    public boolean onCreateOptionsMenu(LayoutInflater inflater, ViewGroup container,
-                                       Bundle savedInstanceState) {
-        View fragmentView = inflater.inflate(R.layout.fragment_search, container, false);
-
-        return true;
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_search, container, false);
@@ -113,6 +66,31 @@ public class SearchFragment extends Fragment {
         return fragmentView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        doSearch(editText.getText().toString());
+    }
+
+    public void doSearch(final String query){
+        DataManager.getInstance(getContext()).getArtworkList(new DataProvider.ArtworkListCompletion() {
+            @Override
+            public void complete(List<Artwork> artworkList) {
+                if(searchListAdapter != null) {
+                    Log.d("search", "s = " + artworkList.size());
+                    searchListAdapter.setFilteredArtworks(new ArrayList<>(artworkList), query);
+                }
+            }
+
+            @Override
+            public void failure(HttpResponseError error) {
+                if(searchListAdapter != null) {
+                    searchListAdapter.setArtworks(null);
+                }
+            }
+        });
+    }
+
     private class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.ViewHolder> {
         private ArrayList<Artwork> artworks;
 
@@ -130,15 +108,17 @@ public class SearchFragment extends Fragment {
         }
 
         public void setFilteredArtworks(ArrayList<Artwork> artworks, String query) {
-            this.artworks.clear();
-
+            if(this.artworks != null) {
+                this.artworks.clear();
+            }
+            else {
+                this.artworks = new ArrayList<>();
+            }
             for(int i = 0; i < artworks.size(); i++){
-                //Log.d("test", artworks.get(i).getTitle().contains(query) + " ");
                 if(artworks.get(i).getTitle().toLowerCase().contains(query.toLowerCase())){
                     this.artworks.add(artworks.get(i));
                 }
             }
-            //Log.d("test", artworks.size() + " ");
             notifyDataSetChanged();
         }
 

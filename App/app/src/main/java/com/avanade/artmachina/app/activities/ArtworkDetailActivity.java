@@ -1,6 +1,9 @@
 package com.avanade.artmachina.app.activities;
 
+<<<<<<< HEAD
 import android.content.Context;
+=======
+>>>>>>> 5c0d9b2a8129416a413b3a939dee0ffb50ce7776
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.provider.ContactsContract;
@@ -16,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -63,6 +67,26 @@ public class ArtworkDetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.getNavigationIcon().setColorFilter(ContextCompat.getColor(this, R.color.colorTextLight), PorterDuff.Mode.SRC_ATOP);
 
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "image url");
+                sendIntent.setType("text/plain");
+                startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.share_label)));
+
+                /*
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_STREAM, uriToImage);
+                shareIntent.setType("image/jpeg");
+                startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
+                */
+                return false;
+            }
+        });
+
         detailList = findViewById(R.id.detail_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         detailList.setLayoutManager(layoutManager);
@@ -71,7 +95,16 @@ public class ArtworkDetailActivity extends AppCompatActivity {
         artworkDetailAdapter = new ArtworkDetailAdapter();
         detailList.setAdapter(artworkDetailAdapter);
 
+<<<<<<< HEAD
         artworkId = getIntent().getStringExtra(Artwork.KEY_NAME_ID);
+=======
+        String artworkId = "id"; //getIntent().getStringExtra(Artwork.KEY_NAME_ID);
+        DataManager.getInstance(this).getArtwork(artworkId, new DataProvider.ArtworkCompletion() {
+            @Override
+            public void complete(Artwork artwork) {
+                artworkDetailAdapter.setArtwork(artwork);
+            }
+>>>>>>> 5c0d9b2a8129416a413b3a939dee0ffb50ce7776
 
         newCommentEditText = findViewById(R.id.new_comment);
         addCommentButton = findViewById(R.id.add_comment);

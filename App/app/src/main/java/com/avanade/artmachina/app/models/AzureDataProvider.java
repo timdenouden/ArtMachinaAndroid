@@ -1,5 +1,8 @@
 package com.avanade.artmachina.app.models;
 
+import android.app.VoiceInteractor;
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
 import com.android.volley.Request;
@@ -117,17 +120,27 @@ public class AzureDataProvider implements DataProvider {
     @Override
     public void updateProfile(final String token, User profile, final ProfileCompletion completion){
         try{
-            JsonObjectRequest request = new JsonObjectRequestWithAuthHeader(token,Request.Method.POST, BASE_URL + "profile",
-                    new JSONObject(gson.toJson(profile)),
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            completion.complete(gson.fromJson(response.toString(),User.class));
-                        }
-                    }, getErrorListener(completion));
-            requestQueue.add(request);
+            JSONObject body = new JSONObject(gson.toJson(profile));
+            JsonObjectRequest req = new JsonObjectRequestWithAuthHeader(
+                token,
+                Request.Method.POST,
+            BASE_URL + "profile",
+                body,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        completion.complete(gson.fromJson(response.toString(),User.class));
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        completion.failure(new HttpResponseError(500, "Server Error"));
+                    }
+                });
+            requestQueue.add(req);
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -237,7 +250,7 @@ public class AzureDataProvider implements DataProvider {
 
     @Override
     public void getPasswordResetUrl(UrlCompletion completion) {
-
+        completion.failure(new HttpResponseError(501, "Unimplemented"));
     }
 
     private Response.ErrorListener getErrorListener(final DataProvider.FailureListener failureListener) {

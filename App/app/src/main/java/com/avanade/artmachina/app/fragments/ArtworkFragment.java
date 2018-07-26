@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.TypedValue;
@@ -33,6 +34,7 @@ public class ArtworkFragment extends Fragment {
 
     private RecyclerView galleryList;
     private GalleryListAdapter galleryListAdapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView.LayoutManager galleryListLayoutManager;
 
     public ArtworkFragment() {
@@ -58,17 +60,37 @@ public class ArtworkFragment extends Fragment {
         int spacingInPixels = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
         galleryList.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
 
+        swipeRefreshLayout = fragmentView.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchArtworks();
+            }
+        });
+
         return fragmentView;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        swipeRefreshLayout.setRefreshing(true);
+        fetchArtworks();
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    private void fetchArtworks() {
         DataManager.getInstance(getActivity()).getArtworkList(new DataProvider.ArtworkListCompletion() {
             @Override
             public void complete(List<Artwork> artworkList) {
                 if(galleryListAdapter != null) {
                     galleryListAdapter.setArtworks(new ArrayList<>(artworkList));
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
 
@@ -76,15 +98,10 @@ public class ArtworkFragment extends Fragment {
             public void failure(HttpResponseError responseError) {
                 if(galleryListAdapter != null) {
                     galleryListAdapter.setArtworks(null);
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
         });
-    }
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 
     private class GalleryListAdapter extends RecyclerView.Adapter<GalleryListAdapter.ArtworkViewHolder> {

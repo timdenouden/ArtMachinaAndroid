@@ -35,6 +35,8 @@ public class GalleryActivity extends AppCompatActivity implements BottomNavigati
     Toolbar toolbar;
     IndexableBottomNavigationView navigation;
     ViewPager viewPager;
+    ViewPagerAdapter adapter;
+    SettingsFragment settingsFragment;
 
     /* Activity Lifecycle Methods */
 
@@ -94,11 +96,11 @@ public class GalleryActivity extends AppCompatActivity implements BottomNavigati
 
     // sets up bottom list fragment navigation
     private void setupViewPager() {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
         ArtworkFragment artworkFragment = new ArtworkFragment();
         SearchFragment searchFragment = new SearchFragment();
         BookmarksFragment bookmarksFragment = new BookmarksFragment();
-        SettingsFragment settingsFragment = new SettingsFragment();
+        settingsFragment = new SettingsFragment();
         adapter.addFragment(artworkFragment);
         adapter.addFragment(searchFragment);
         adapter.addFragment(bookmarksFragment);

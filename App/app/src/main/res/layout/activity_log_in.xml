@@ -76,7 +76,7 @@
         android:layout_marginTop="32dp"
         android:ems="10"
         android:hint="PASSWORD"
-        android:inputType="numberPassword"
+        android:inputType="textPassword"
         android:textColor="@color/colorTextLight"
         android:textColorHint="@color/colorTextLight"
         app:layout_constraintEnd_toEndOf="parent"
@@ -84,7 +84,7 @@
         app:layout_constraintTop_toBottomOf="@+id/email" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/forgotPassword"
         style="@android:style/Widget.Material.Button.Borderless.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
         android:theme="@style/LoginButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/forgotPassword" />
 
     <Button
         android:id="@+id/register"
@@ -133,9 +133,9 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register" />
+        app:layout_constraintTop_toBottomOf="@+id/loginToolbar" />
 </android.support.constraint.ConstraintLayout>

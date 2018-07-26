@@ -2,6 +2,7 @@ package com.avanade.artmachina.app.models;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.util.LruCache;
 
@@ -25,6 +26,8 @@ public class DataManager {
     private RequestQueue requestQueue;
     private ImageLoader imageLoader;
     private DataProvider dataProvider;
+    private String token = "";
+    private User user = null;
 
     private DataManager(Context context) {
         requestQueue = Volley.newRequestQueue(context);
@@ -65,11 +68,63 @@ public class DataManager {
         return imageLoader;
     }
 
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        if(this.user != null) {
+            return this.user;
+        }
+        return new User();
+    }
+
+    public boolean isLoggedIn() {
+        return this.token.length() > 0;
+    }
+
+    public void logOut() {
+        this.token = "";
+    }
+
     public void getArtworkList(DataProvider.ArtworkListCompletion completion) {
-        dataProvider.getArtworkList("token", completion);
+        dataProvider.getArtworkList(this.token, completion);
     }
 
     public void getArtwork(String id, DataProvider.ArtworkCompletion completion) {
-        dataProvider.getArtwork("token", id, completion);
+        dataProvider.getArtwork(this.token, id, completion);
+    }
+
+    public void getComments(String artworkId, DataProvider.CommentListCompletion completion) {
+        dataProvider.getCommentList(this.token, artworkId, completion);
+    }
+
+    public void addComment(String artworkId, String content, DataProvider.EmptyCompletion completion) {
+        dataProvider.postComment(this.token, artworkId, content, completion);
+    }
+
+    public void login(User userCredential, DataProvider.AuthCompletion completion) {
+        dataProvider.login(userCredential, completion);
+    }
+
+    public void getResetUrl(DataProvider.UrlCompletion completion) {
+        dataProvider.getPasswordResetUrl(completion);
+    }
+
+    public void getProfile(DataProvider.ProfileCompletion completion) {
+        if(token.length() > 0) {
+            dataProvider.getProfile(this.token, completion);
+        }
+        else {
+            completion.failure(new HttpResponseError(400, "Bad Request"));
+        }
+    }
+
+    public void updateProfile(User profile, DataProvider.ProfileCompletion completion) {
+        dataProvider.updateProfile(this.token, profile, completion);
     }
 }
