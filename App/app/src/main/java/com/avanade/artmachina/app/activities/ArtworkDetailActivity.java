@@ -2,7 +2,11 @@ package com.avanade.artmachina.app.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Environment;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -35,8 +39,13 @@ import com.avanade.artmachina.app.models.Comment;
 import com.avanade.artmachina.app.models.DataManager;
 import com.avanade.artmachina.app.models.DataProvider;
 import com.avanade.artmachina.app.models.HttpResponseError;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +58,7 @@ public class ArtworkDetailActivity extends AppCompatActivity {
     String artworkId = "";
     EditText newCommentEditText;
     ImageButton addCommentButton;
+    Target target;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +74,6 @@ public class ArtworkDetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.getNavigationIcon().setColorFilter(ContextCompat.getColor(this, R.color.colorTextLight), PorterDuff.Mode.SRC_ATOP);
-        
 
         detailList = findViewById(R.id.detail_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -83,19 +92,18 @@ public class ArtworkDetailActivity extends AppCompatActivity {
                 toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        Intent sendIntent = new Intent();
-                        sendIntent.setAction(Intent.ACTION_SEND);
-                        sendIntent.putExtra(Intent.EXTRA_TEXT, artwork.getProcessedImageUrl());
-                        sendIntent.setType("text/plain");
-                        startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.share_label)));
+                        Picasso.get().load(String.valueOf(artwork.getProcessedImageUrl())).into(new Target() {
+                            @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                Intent i = new Intent(Intent.ACTION_SEND);
+                                i.setType("image/*");
+                                i.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(bitmap));
+                                startActivity(Intent.createChooser(i, "Share Image"));
+                            }
 
-                        /*
-                        Intent shareIntent = new Intent();
-                        shareIntent.setAction(Intent.ACTION_SEND);
-                        shareIntent.putExtra(Intent.EXTRA_STREAM, uriToImage);
-                        shareIntent.setType("image/jpeg");
-                        startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
-                        */
+                            @Override public void onBitmapFailed(Exception e, Drawable errorDrawable) { }
+                            @Override public void onPrepareLoad(Drawable placeHolderDrawable) { }
+                        });
+
                         return false;
                     }
                 });
@@ -143,6 +151,20 @@ public class ArtworkDetailActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public Uri getLocalBitmapUri(Bitmap bmp) {
+        Uri bmpUri = null;
+        try {
+            File file =  new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "share_image_" + System.currentTimeMillis() + ".png");
+            FileOutputStream out = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.close();
+            bmpUri = Uri.fromFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bmpUri;
     }
 
     @Override
