@@ -1,5 +1,6 @@
 package com.avanade.artmachina.app.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.provider.ContactsContract;
@@ -35,6 +36,7 @@ import com.avanade.artmachina.app.models.DataManager;
 import com.avanade.artmachina.app.models.DataProvider;
 import com.avanade.artmachina.app.models.HttpResponseError;
 
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +63,7 @@ public class ArtworkDetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.getNavigationIcon().setColorFilter(ContextCompat.getColor(this, R.color.colorTextLight), PorterDuff.Mode.SRC_ATOP)
+        toolbar.getNavigationIcon().setColorFilter(ContextCompat.getColor(this, R.color.colorTextLight), PorterDuff.Mode.SRC_ATOP);
         
 
         detailList = findViewById(R.id.detail_list);
@@ -87,18 +89,23 @@ public class ArtworkDetailActivity extends AppCompatActivity {
                         sendIntent.setType("text/plain");
                         startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.share_label)));
 
-                /*
-                Intent shareIntent = new Intent();
-                shareIntent.setAction(Intent.ACTION_SEND);
-                shareIntent.putExtra(Intent.EXTRA_STREAM, uriToImage);
-                shareIntent.setType("image/jpeg");
-                startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
-                */
+                        /*
+                        Intent shareIntent = new Intent();
+                        shareIntent.setAction(Intent.ACTION_SEND);
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, uriToImage);
+                        shareIntent.setType("image/jpeg");
+                        startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
+                        */
                         return false;
                     }
                 });
             }
-		}
+
+            @Override
+            public void failure(HttpResponseError error) {
+
+            }
+		});
 
         newCommentEditText = findViewById(R.id.new_comment);
         addCommentButton = findViewById(R.id.add_comment);
