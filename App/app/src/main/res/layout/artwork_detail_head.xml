@@ -22,15 +22,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:inAnimation="@anim/fade_in"
-        android:outAnimation="@anim/fade_out" >
+        android:inAnimation="@android:anim/fade_in"
+        android:outAnimation="@android:anim/fade_out" >
 
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/main_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:minHeight="300dp"
+            android:minHeight="100dp"
             android:maxHeight="800dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:minHeight="300dp"
+            android:minHeight="100dp"
             android:maxHeight="800dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -135,4 +135,8 @@ public class DataManager {
     public void updateBookmark(Artwork updatedArtwork, DataProvider.EmptyCompletion completion) {
         dataProvider.updateBookmark(this.token, updatedArtwork, completion);
     }
+
+    public void updateRating(Artwork updatedArtwork, DataProvider.EmptyCompletion completion) {
+        dataProvider.updateRating(this.token, updatedArtwork, completion);
+    }
 }

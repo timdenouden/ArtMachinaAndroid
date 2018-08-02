@@ -257,8 +257,27 @@ public class AzureDataProvider implements DataProvider {
     }
 
     @Override
-    public void updateRating(String token, Artwork artwork, EmptyCompletion completion) {
+    public void updateRating(String token, Artwork artwork, final EmptyCompletion completion) {
+        try{
+            JSONObject body = new JSONObject(gson.toJson(artwork));
+            JsonObjectRequest req = new JsonObjectRequestWithAuthHeader(
+                    token,
+                    Request.Method.POST,
+                    BASE_URL + "rating",
+                    body,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            completion.complete();
+                        }
+                    },
+                    getErrorListener(completion));
+            requestQueue.add(req);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            completion.failure(new HttpResponseError(520, "Parse Error"));
+        }
     }
 
 

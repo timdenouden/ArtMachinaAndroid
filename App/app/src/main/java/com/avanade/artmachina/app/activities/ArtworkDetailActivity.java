@@ -324,6 +324,7 @@ public class ArtworkDetailActivity extends AppCompatActivity {
                 headerViewHolder.setRatingCount(artwork.getRatingCount());
                 headerViewHolder.setIsBookmarked(artwork.isBookmarked());
                 headerViewHolder.setDescription(artwork.getDescription());
+                headerViewHolder.setButtonRatingStars(artwork.getMyRating());
             }
             else if(viewType == VIEW_TYPE_COMMENT) {
                 CommentViewHolder commentViewHolder = (CommentViewHolder)holder;
@@ -340,7 +341,7 @@ public class ArtworkDetailActivity extends AppCompatActivity {
             return 0;
         }
 
-        public class HeaderViewHolder extends RecyclerView.ViewHolder implements TabLayout.OnTabSelectedListener {
+        public class HeaderViewHolder extends RecyclerView.ViewHolder implements TabLayout.OnTabSelectedListener, View.OnClickListener {
             private NetworkImageView mainImage, mainImage2;
             private TabLayout tabLayout;
             private TextView author;
@@ -401,10 +402,15 @@ public class ArtworkDetailActivity extends AppCompatActivity {
                 ratingCount = view.findViewById(R.id.rating_text);
                 description = view.findViewById(R.id.description);
                 ratingButton1 = view.findViewById(R.id.rating_button1);
+                ratingButton1.setOnClickListener(this);
                 ratingButton2 = view.findViewById(R.id.rating_button2);
+                ratingButton2.setOnClickListener(this);
                 ratingButton3 = view.findViewById(R.id.rating_button3);
+                ratingButton3.setOnClickListener(this);
                 ratingButton4 = view.findViewById(R.id.rating_button4);
+                ratingButton4.setOnClickListener(this);
                 ratingButton5 = view.findViewById(R.id.rating_button5);
+                ratingButton5.setOnClickListener(this);
                 this.artwork = artwork;
             }
 
@@ -477,6 +483,53 @@ public class ArtworkDetailActivity extends AppCompatActivity {
                 }
             }
 
+            // set the star images based on rating amount
+            public void setButtonRatingStars(double rating) {
+                int roundedRating = (int)Math.floor(rating);
+                if(roundedRating == 1) {
+                    ratingButton1.setImageResource(R.drawable.ic_baseline_star_24px);
+                    ratingButton2.setImageResource(R.drawable.ic_baseline_star_border_24px);
+                    ratingButton3.setImageResource(R.drawable.ic_baseline_star_border_24px);
+                    ratingButton4.setImageResource(R.drawable.ic_baseline_star_border_24px);
+                    ratingButton5.setImageResource(R.drawable.ic_baseline_star_border_24px);
+                }
+                else if(roundedRating == 2) {
+                    ratingButton1.setImageResource(R.drawable.ic_baseline_star_24px);
+                    ratingButton2.setImageResource(R.drawable.ic_baseline_star_24px);
+                    ratingButton3.setImageResource(R.drawable.ic_baseline_star_border_24px);
+                    ratingButton4.setImageResource(R.drawable.ic_baseline_star_border_24px);
+                    ratingButton5.setImageResource(R.drawable.ic_baseline_star_border_24px);
+                }
+                else if(roundedRating == 3) {
+                    ratingButton1.setImageResource(R.drawable.ic_baseline_star_24px);
+                    ratingButton2.setImageResource(R.drawable.ic_baseline_star_24px);
+                    ratingButton3.setImageResource(R.drawable.ic_baseline_star_24px);
+                    ratingButton4.setImageResource(R.drawable.ic_baseline_star_border_24px);
+                    ratingButton5.setImageResource(R.drawable.ic_baseline_star_border_24px);
+                }
+                else if(roundedRating == 4) {
+                    ratingButton1.setImageResource(R.drawable.ic_baseline_star_24px);
+                    ratingButton2.setImageResource(R.drawable.ic_baseline_star_24px);
+                    ratingButton3.setImageResource(R.drawable.ic_baseline_star_24px);
+                    ratingButton4.setImageResource(R.drawable.ic_baseline_star_24px);
+                    ratingButton5.setImageResource(R.drawable.ic_baseline_star_border_24px);
+                }
+                else if(roundedRating >= 5) {
+                    ratingButton1.setImageResource(R.drawable.ic_baseline_star_24px);
+                    ratingButton2.setImageResource(R.drawable.ic_baseline_star_24px);
+                    ratingButton3.setImageResource(R.drawable.ic_baseline_star_24px);
+                    ratingButton4.setImageResource(R.drawable.ic_baseline_star_24px);
+                    ratingButton5.setImageResource(R.drawable.ic_baseline_star_24px);
+                }
+                else {
+                    ratingButton1.setImageResource(R.drawable.ic_baseline_star_border_24px);
+                    ratingButton2.setImageResource(R.drawable.ic_baseline_star_border_24px);
+                    ratingButton3.setImageResource(R.drawable.ic_baseline_star_border_24px);
+                    ratingButton4.setImageResource(R.drawable.ic_baseline_star_border_24px);
+                    ratingButton5.setImageResource(R.drawable.ic_baseline_star_border_24px);
+                }
+            }
+
             public void setRatingCount(int count) {
                 if(count > 1) {
                     ratingCount.setText(count + " ratings");
@@ -497,21 +550,26 @@ public class ArtworkDetailActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(final TabLayout.Tab tab) {
                 if(artwork != null) {
+                    ViewSwitcher viewSwitcher = findViewById(R.id.switcher);
+                    viewSwitcher.setDisplayedChild(0);
                     switch (tab.getPosition()) {
                         case 0:
                             setMainImage(artwork.getSourceImageUrl());
+                            viewSwitcher.setOnClickListener(null);
                             break;
                         case 1:
                             setMainImage(artwork.getReferenceImageUrl());
+                            viewSwitcher.setOnClickListener(null);
                             break;
                         case 2:
                             setMainImage(artwork.getProcessedImageUrl());
+                            viewSwitcher.setOnClickListener(null);
                             break;
                         case 3:
                             setMainImage(artwork.getSourceImageUrl());
                             setMainImageTwo(artwork.getProcessedImageUrl());
 
-                            ((ViewSwitcher) findViewById(R.id.switcher)).setOnClickListener(new View.OnClickListener() {
+                            viewSwitcher.setOnClickListener(new View.OnClickListener() {
 
                                 public void onClick(View v) {
                                     ViewSwitcher switcher = (ViewSwitcher) v;
@@ -538,6 +596,137 @@ public class ArtworkDetailActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
+            }
+
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.rating_button1:
+                        final double prevRating = artwork.getRating();
+                        artwork.setMyRating(1);
+                        DataManager.getInstance(ArtworkDetailActivity.this).updateRating(artwork, new DataProvider.EmptyCompletion() {
+                            @Override
+                            public void complete() {
+                                Log.d("rate", "success");
+                                setButtonRatingStars(1);
+                            }
+
+                            @Override
+                            public void failure(HttpResponseError error) {
+                                if(error.getErrorCode() == 401) {
+                                    Toast.makeText(ArtworkDetailActivity.this, "Please log in to rate", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(ArtworkDetailActivity.this, LogInActivity.class);
+                                    startActivity(intent);
+                                }
+                                else {
+                                    Log.d("rate", error.getErrorCode() + " " + error.getErrorMessage());
+                                }
+                                artwork.setMyRating(prevRating);
+                                setButtonRatingStars(0);
+                            }
+                        });
+                        break;
+                    case R.id.rating_button2:
+                        final double prevRating2 = artwork.getRating();
+                        artwork.setMyRating(2);
+                        DataManager.getInstance(ArtworkDetailActivity.this).updateRating(artwork, new DataProvider.EmptyCompletion() {
+                            @Override
+                            public void complete() {
+                                Log.d("rate", "success");
+                                setButtonRatingStars(2);
+                            }
+
+                            @Override
+                            public void failure(HttpResponseError error) {
+                                if(error.getErrorCode() == 401) {
+                                    Toast.makeText(ArtworkDetailActivity.this, "Please log in to rate", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(ArtworkDetailActivity.this, LogInActivity.class);
+                                    startActivity(intent);
+                                }
+                                else {
+                                    Log.d("rate", error.getErrorCode() + " " + error.getErrorMessage());
+                                }
+                                artwork.setMyRating(prevRating2);
+                                setButtonRatingStars(0);
+                            }
+                        });
+                        break;
+                    case R.id.rating_button3:
+                        final double prevRating3 = artwork.getRating();
+                        artwork.setMyRating(3);
+                        DataManager.getInstance(ArtworkDetailActivity.this).updateRating(artwork, new DataProvider.EmptyCompletion() {
+                            @Override
+                            public void complete() {
+                                Log.d("rate", "success");
+                                setButtonRatingStars(3);
+                            }
+
+                            @Override
+                            public void failure(HttpResponseError error) {
+                                if(error.getErrorCode() == 401) {
+                                    Toast.makeText(ArtworkDetailActivity.this, "Please log in to rate", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(ArtworkDetailActivity.this, LogInActivity.class);
+                                    startActivity(intent);
+                                }
+                                else {
+                                    Log.d("rate", error.getErrorCode() + " " + error.getErrorMessage());
+                                }
+                                artwork.setMyRating(prevRating3);
+                                setButtonRatingStars(0);
+                            }
+                        });
+                        break;
+                    case R.id.rating_button4:
+                        final double prevRating4 = artwork.getRating();
+                        artwork.setMyRating(4);
+                        DataManager.getInstance(ArtworkDetailActivity.this).updateRating(artwork, new DataProvider.EmptyCompletion() {
+                            @Override
+                            public void complete() {
+                                Log.d("rate", "success");
+                                setButtonRatingStars(4);
+                            }
+
+                            @Override
+                            public void failure(HttpResponseError error) {
+                                if(error.getErrorCode() == 401) {
+                                    Toast.makeText(ArtworkDetailActivity.this, "Please log in to rate", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(ArtworkDetailActivity.this, LogInActivity.class);
+                                    startActivity(intent);
+                                }
+                                else {
+                                    Log.d("rate", error.getErrorCode() + " " + error.getErrorMessage());
+                                }
+                                artwork.setMyRating(prevRating4);
+                                setButtonRatingStars(0);
+                            }
+                        });
+                        break;
+                    case R.id.rating_button5:
+                        final double prevRating5 = artwork.getRating();
+                        artwork.setMyRating(5);
+                        DataManager.getInstance(ArtworkDetailActivity.this).updateRating(artwork, new DataProvider.EmptyCompletion() {
+                            @Override
+                            public void complete() {
+                                Log.d("rate", "success");
+                                setButtonRatingStars(5);
+                            }
+
+                            @Override
+                            public void failure(HttpResponseError error) {
+                                if(error.getErrorCode() == 401) {
+                                    Toast.makeText(ArtworkDetailActivity.this, "Please log in to rate", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(ArtworkDetailActivity.this, LogInActivity.class);
+                                    startActivity(intent);
+                                }
+                                else {
+                                    Log.d("rate", error.getErrorCode() + " " + error.getErrorMessage());
+                                }
+                                artwork.setMyRating(prevRating5);
+                                setButtonRatingStars(5);
+                            }
+                        });
+                        break;
+                }
             }
         }
 

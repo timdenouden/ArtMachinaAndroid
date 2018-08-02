@@ -149,8 +149,9 @@ public class Artwork {
         return myRating;
     }
 
-    public void setMyRating(int myRating) {
-        this.myRating = myRating;
+    public void setMyRating(double myRating) {
+        this.rating = myRating;
+        this.myRating = (int)myRating;
     }
 
     public boolean isBookmarked() {
