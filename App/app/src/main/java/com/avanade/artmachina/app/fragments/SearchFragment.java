@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.avanade.artmachina.R;
+import com.avanade.artmachina.app.activities.ArtworkDetailActivity;
 import com.avanade.artmachina.app.models.Artwork;
 import com.avanade.artmachina.app.models.DataManager;
 import com.avanade.artmachina.app.models.DataProvider;
@@ -135,6 +136,7 @@ public class SearchFragment extends Fragment {
             Artwork artwork = artworks.get(position);
             viewHolder.searchImage.setImageUrl(artwork.getProcessedImageUrl().toString(), DataManager.getInstance(getActivity()).getImageLoader());
             viewHolder.artworkTitle.setText(artwork.getTitle());
+            viewHolder.artwork = artwork;
         }
 
         @Override
@@ -145,14 +147,25 @@ public class SearchFragment extends Fragment {
             return artworks.size();
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             public NetworkImageView searchImage;
             public TextView artworkTitle;
+            public Artwork artwork;
 
             public ViewHolder(View view) {
                 super(view);
+                view.setOnClickListener(this);
                 searchImage = view.findViewById(R.id.list_image);
                 artworkTitle = view.findViewById(R.id.list_title);
+            }
+
+            @Override
+            public void onClick(View v) {
+                if(artwork != null) {
+                    Intent intent = new Intent(getActivity(), ArtworkDetailActivity.class);
+                    intent.putExtra(Artwork.KEY_NAME_ID, artwork.getId());
+                    startActivity(intent);
+                }
             }
         }
     }

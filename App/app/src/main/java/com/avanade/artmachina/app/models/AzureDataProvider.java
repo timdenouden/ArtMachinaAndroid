@@ -233,19 +233,49 @@ public class AzureDataProvider implements DataProvider {
     }
 
     @Override
-    public void updateBookmark(String token, String artworkId, boolean newBookmarkState, EmptyCompletion completion) {
+    public void updateBookmark(String token, Artwork artwork, final EmptyCompletion completion) {
+        try{
+            JSONObject body = new JSONObject(gson.toJson(artwork));
+            JsonObjectRequest req = new JsonObjectRequestWithAuthHeader(
+                    token,
+                    Request.Method.POST,
+                    BASE_URL + "bookmark",
+                    body,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            completion.complete();
+                        }
+                    },
+                    getErrorListener(completion));
+            requestQueue.add(req);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            completion.failure(new HttpResponseError(520, "Parse Error"));
+        }
     }
 
     @Override
-    public void updateRating(String token, String artworkId, int newRating, EmptyCompletion completion) {
+    public void updateRating(String token, Artwork artwork, EmptyCompletion completion) {
 
     }
 
 
     @Override
-    public void getBookmarkList(String token, ArtworkListCompletion completion) {
-
+    public void getBookmarkList(String token, final ArtworkListCompletion completion) {
+        JsonArrayRequest request = new JsonArrayRequestWithAuthHeader(token,Request.Method.GET, BASE_URL + "bookmark", null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        List<Artwork> artworkList = new ArrayList<>();
+                        for (int i=0;i <response.length();i++){
+                            artworkList.add(gson.fromJson(response.optJSONObject(i).toString(),Artwork.class));
+                        }
+                        completion.complete(artworkList);
+                    }
+                },getErrorListener(completion));
+        requestQueue.add(request);
     }
 
     @Override
@@ -257,9 +287,13 @@ public class AzureDataProvider implements DataProvider {
         return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof NetworkError) {
+                //Log.d("AzureDP", error.getMessage());
+                if (error.networkResponse != null) {
                     failureListener.failure(new HttpResponseError(error.networkResponse.statusCode,
                             new String(error.networkResponse.data)));
+                }
+                else  {
+                    failureListener.failure(new HttpResponseError(500, "Unknown error"));
                 }
             }
         };

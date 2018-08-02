@@ -190,6 +190,7 @@ public class ArtworkDetailActivity extends AppCompatActivity {
 
             @Override
             public void failure(HttpResponseError responseError) {
+                Log.d("Network", responseError.getErrorCode() + " " + responseError.getErrorMessage());
                 Toast.makeText(ArtworkDetailActivity.this, "There was an error fetching Artwork details", Toast.LENGTH_SHORT).show();
                 onBackPressed();
             }
@@ -314,7 +315,7 @@ public class ArtworkDetailActivity extends AppCompatActivity {
             private ImageButton ratingButton5;
             private Artwork artwork;
 
-            public HeaderViewHolder(View view, Artwork artwork) {
+            public HeaderViewHolder(View view, final Artwork artwork) {
                 super(view);
                 mainImage = view.findViewById(R.id.main_image);
                 tabLayout = view.findViewById(R.id.tab_layout);
@@ -322,6 +323,31 @@ public class ArtworkDetailActivity extends AppCompatActivity {
                 tabLayout.getTabAt(2).select();
                 author = view.findViewById(R.id.author);
                 bookmarkButton = view.findViewById(R.id.bookmarkButton);
+                bookmarkButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        artwork.setBookmarked(!artwork.isBookmarked());
+                        DataManager.getInstance(ArtworkDetailActivity.this).updateBookmark(artwork, new DataProvider.EmptyCompletion() {
+                            @Override
+                            public void complete() {
+                                setIsBookmarked(artwork.isBookmarked());
+                            }
+
+                            @Override
+                            public void failure(HttpResponseError error) {
+                                if(error.getErrorCode() == 401) {
+                                    Toast.makeText(ArtworkDetailActivity.this, "Please log in to bookmark", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(ArtworkDetailActivity.this, LogInActivity.class);
+                                    startActivity(intent);
+                                }
+                                else {
+                                    Log.d("bookmark", error.getErrorCode() + " " + error.getErrorMessage());
+                                }
+                                artwork.setBookmarked(!artwork.isBookmarked());
+                            }
+                        });
+                    }
+                });
                 ratingStar1 = view.findViewById(R.id.rating_star1);
                 ratingStar2 = view.findViewById(R.id.rating_star2);
                 ratingStar3 = view.findViewById(R.id.rating_star3);

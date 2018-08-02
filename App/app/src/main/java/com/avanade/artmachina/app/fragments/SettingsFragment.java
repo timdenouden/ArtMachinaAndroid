@@ -2,6 +2,7 @@ package com.avanade.artmachina.app.fragments;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
@@ -35,6 +36,7 @@ public class SettingsFragment extends Fragment {
     private EditText title;
     private EditText company;
     private Button save;
+    private TextView avanade;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -85,6 +87,14 @@ public class SettingsFragment extends Fragment {
 
         loginItem = view.findViewById(R.id.login);
 
+        avanade = view.findViewById(R.id.avanade);
+        avanade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.avanade.com/en/technologies/artificial-intelligence"));
+                startActivity(browserIntent);
+            }
+        });
         return view;
     }
 

@@ -127,4 +127,12 @@ public class DataManager {
     public void updateProfile(User profile, DataProvider.ProfileCompletion completion) {
         dataProvider.updateProfile(this.token, profile, completion);
     }
+
+    public void getBookmarkList(DataProvider.ArtworkListCompletion completion) {
+        dataProvider.getBookmarkList(this.token, completion);
+    }
+
+    public void updateBookmark(Artwork updatedArtwork, DataProvider.EmptyCompletion completion) {
+        dataProvider.updateBookmark(this.token, updatedArtwork, completion);
+    }
 }

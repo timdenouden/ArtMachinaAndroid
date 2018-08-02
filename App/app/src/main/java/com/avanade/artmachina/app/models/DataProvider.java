@@ -45,8 +45,8 @@ public interface DataProvider {
     void deleteComment(String token, String commentId, EmptyCompletion completion);
     void reportComment(String token, String commentId, EmptyCompletion completion);
     void getArtwork(String token, String artworkId, ArtworkCompletion completion);
-    void updateBookmark(String token, String artworkId, boolean newBookmarkState, EmptyCompletion completion);
-    void updateRating(String token, String artworkId, int newRating, EmptyCompletion completion);
+    void updateBookmark(String token, Artwork artwork, EmptyCompletion completion);
+    void updateRating(String token, Artwork artwork, EmptyCompletion completion);
     void getBookmarkList(String token, ArtworkListCompletion completion);
     void getPasswordResetUrl(UrlCompletion completion);
 

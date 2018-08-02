@@ -127,24 +127,12 @@
                     android:background="@color/colorSeporatorLine" />
 
                 <TextView
+                    android:id="@+id/avanade"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:gravity="center_vertical"
                     android:paddingLeft="24dp"
                     android:text="Avanade"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/colorSeporatorLine" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="24dp"
-                    android:text="Clear Search History"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
                 <View

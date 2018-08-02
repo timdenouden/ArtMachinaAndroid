@@ -56,7 +56,7 @@ public class GalleryActivity extends AppCompatActivity implements BottomNavigati
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.gallery_filter, menu);
+        //getMenuInflater().inflate(R.menu.gallery_filter, menu);
         return true;
     }
 

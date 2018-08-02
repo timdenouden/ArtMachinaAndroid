@@ -69,7 +69,7 @@ public class Artwork {
         this.referenceImageUrl = referenceImageUrl;
         this.referenceImageWidth = referenceImageWidth;
         this.referenceImageHeight = referenceImageHeight;
-        this.myRating = myRating;
+        this.rating = myRating;
         this.isBookmarked = isBookmarked;
     }
 
