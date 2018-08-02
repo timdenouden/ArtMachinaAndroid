@@ -1,5 +1,7 @@
 package com.avanade.artmachina.app.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -23,6 +25,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.avanade.artmachina.R;
@@ -59,6 +64,10 @@ public class ArtworkDetailActivity extends AppCompatActivity {
     EditText newCommentEditText;
     ImageButton addCommentButton;
     Target target;
+    View sourceView;
+    View processedView;
+    int animationDuration;
+    Animation animCrossFadeIn, animCrossFadeOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +160,21 @@ public class ArtworkDetailActivity extends AppCompatActivity {
                 }
             }
         });
+
+        /*
+        sourceView = findViewById(R.id.main_image);
+
+        //processedView = findViewById(R.id.main_image2);
+        //processedView = setContentView(getProcessedImageUrl());
+        //sourceView.setVisibility(View.GONE);
+        //animationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+        animCrossFadeIn = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.fade_in);
+        animCrossFadeOut = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.fade_out);
+        */
+
     }
 
     public Uri getLocalBitmapUri(Bitmap bmp) {
@@ -165,6 +189,26 @@ public class ArtworkDetailActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return bmpUri;
+    }
+
+    private void animate() {
+        sourceView.setAlpha(0f);
+        sourceView.setVisibility(View.VISIBLE);
+
+        sourceView.animate()
+                .alpha(1f)
+                .setDuration(animationDuration)
+                .setListener(null);
+
+        processedView.animate()
+                .alpha(0f)
+                .setDuration(animationDuration)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        processedView.setVisibility(View.GONE);
+                    }
+                });
     }
 
     @Override
@@ -296,7 +340,7 @@ public class ArtworkDetailActivity extends AppCompatActivity {
         }
 
         public class HeaderViewHolder extends RecyclerView.ViewHolder implements TabLayout.OnTabSelectedListener {
-            private NetworkImageView mainImage;
+            private NetworkImageView mainImage, mainImage2;
             private TabLayout tabLayout;
             private TextView author;
             private ImageButton bookmarkButton;
@@ -317,6 +361,7 @@ public class ArtworkDetailActivity extends AppCompatActivity {
             public HeaderViewHolder(View view, Artwork artwork) {
                 super(view);
                 mainImage = view.findViewById(R.id.main_image);
+                mainImage2 = view.findViewById(R.id.main_image2) ;
                 tabLayout = view.findViewById(R.id.tab_layout);
                 tabLayout.addOnTabSelectedListener(this);
                 tabLayout.getTabAt(2).select();
@@ -339,6 +384,10 @@ public class ArtworkDetailActivity extends AppCompatActivity {
 
             public void setMainImage(URL url) {
                 mainImage.setImageUrl(url.toString(), DataManager.getInstance(ArtworkDetailActivity.this).getImageLoader());
+            }
+
+            public void setMainImageTwo(URL url) {
+                mainImage2.setImageUrl(url.toString(), DataManager.getInstance(ArtworkDetailActivity.this).getImageLoader());
             }
 
             public void setAuthor(String authorText) {
@@ -418,8 +467,9 @@ public class ArtworkDetailActivity extends AppCompatActivity {
                 description.setText(descriptionText);
             }
 
+            //Four tabs for specific artwork
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
+            public void onTabSelected(final TabLayout.Tab tab) {
                 if(artwork != null) {
                     switch (tab.getPosition()) {
                         case 0:
@@ -432,7 +482,23 @@ public class ArtworkDetailActivity extends AppCompatActivity {
                             setMainImage(artwork.getProcessedImageUrl());
                             break;
                         case 3:
-                            setMainImage(artwork.getProcessedImageUrl());
+                            setMainImage(artwork.getSourceImageUrl());
+                            setMainImageTwo(artwork.getProcessedImageUrl());
+
+                            ((ViewSwitcher) findViewById(R.id.switcher)).setOnClickListener(new View.OnClickListener() {
+
+                                public void onClick(View v) {
+                                    ViewSwitcher switcher = (ViewSwitcher) v;
+
+                                    if (switcher.getDisplayedChild() == 0 && tab.getPosition() == 3) {
+                                        switcher.showNext();
+                                    }
+                                    else {
+                                        switcher.showPrevious();
+                                    }
+                                }
+                            });
+
                             break;
                     }
                 }
