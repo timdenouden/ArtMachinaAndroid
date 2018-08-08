@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ViewSwitcher
+    <ViewFlipper
         android:id="@+id/switcher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    </ViewSwitcher>
+    </ViewFlipper>
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"

@@ -35,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 import android.widget.ViewSwitcher;
 
 import com.android.volley.toolbox.NetworkImageView;
@@ -160,20 +161,6 @@ public class ArtworkDetailActivity extends AppCompatActivity {
                 }
             }
         });
-
-        /*
-        sourceView = findViewById(R.id.main_image);
-
-        //processedView = findViewById(R.id.main_image2);
-        //processedView = setContentView(getProcessedImageUrl());
-        //sourceView.setVisibility(View.GONE);
-        //animationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-        animCrossFadeIn = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.fade_in);
-        animCrossFadeOut = AnimationUtils.loadAnimation(getApplicationContext(),
-                R.anim.fade_out);
-        */
 
     }
 
@@ -550,8 +537,11 @@ public class ArtworkDetailActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(final TabLayout.Tab tab) {
                 if(artwork != null) {
-                    ViewSwitcher viewSwitcher = findViewById(R.id.switcher);
-                    viewSwitcher.setDisplayedChild(0);
+                    ViewFlipper viewSwitcher = findViewById(R.id.switcher);
+
+
+                    //ViewSwitcher viewSwitcher = findViewById(R.id.switcher);
+                    //viewSwitcher.setDisplayedChild(0);
                     switch (tab.getPosition()) {
                         case 0:
                             setMainImage(artwork.getSourceImageUrl());
@@ -569,20 +559,8 @@ public class ArtworkDetailActivity extends AppCompatActivity {
                             setMainImage(artwork.getSourceImageUrl());
                             setMainImageTwo(artwork.getProcessedImageUrl());
 
-                            viewSwitcher.setOnClickListener(new View.OnClickListener() {
-
-                                public void onClick(View v) {
-                                    ViewSwitcher switcher = (ViewSwitcher) v;
-
-                                    if (switcher.getDisplayedChild() == 0 && tab.getPosition() == 3) {
-                                        switcher.showNext();
-                                    }
-                                    else {
-                                        switcher.showPrevious();
-                                    }
-                                }
-                            });
-
+                            viewSwitcher.startFlipping();
+                            viewSwitcher.setFlipInterval(2000);
                             break;
                     }
                 }
