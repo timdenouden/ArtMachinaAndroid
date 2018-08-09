@@ -22,8 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:inAnimation="@android:anim/fade_in"
-        android:outAnimation="@android:anim/fade_out" >
+        android:inAnimation="@anim/fade_in"
+        android:outAnimation="@anim/fade_out" >
 
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/main_image"

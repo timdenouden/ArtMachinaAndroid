@@ -544,23 +544,25 @@ public class ArtworkDetailActivity extends AppCompatActivity {
                     //viewSwitcher.setDisplayedChild(0);
                     switch (tab.getPosition()) {
                         case 0:
+                            viewSwitcher.stopFlipping();
+                            viewSwitcher.setDisplayedChild(0);
                             setMainImage(artwork.getSourceImageUrl());
-                            viewSwitcher.setOnClickListener(null);
                             break;
                         case 1:
+                            viewSwitcher.stopFlipping();
+                            viewSwitcher.setDisplayedChild(0);
                             setMainImage(artwork.getReferenceImageUrl());
-                            viewSwitcher.setOnClickListener(null);
                             break;
                         case 2:
+                            viewSwitcher.stopFlipping();
+                            viewSwitcher.setDisplayedChild(0);
                             setMainImage(artwork.getProcessedImageUrl());
-                            viewSwitcher.setOnClickListener(null);
                             break;
                         case 3:
+                            viewSwitcher.setDisplayedChild(0);
                             setMainImage(artwork.getSourceImageUrl());
                             setMainImageTwo(artwork.getProcessedImageUrl());
-
                             viewSwitcher.startFlipping();
-                            viewSwitcher.setFlipInterval(2000);
                             break;
                     }
                 }
