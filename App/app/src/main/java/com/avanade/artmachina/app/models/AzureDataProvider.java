@@ -98,6 +98,7 @@ public class AzureDataProvider implements DataProvider {
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, BASE_URL + "auth",
                     new JSONObject(gson.toJson(newUser)), getAuthListener(completion), getErrorListener(completion));
             requestQueue.add(request);
+            Log.d("register", request.getBody().toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -299,7 +300,7 @@ public class AzureDataProvider implements DataProvider {
 
     @Override
     public void getPasswordResetUrl(UrlCompletion completion) {
-        completion.failure(new HttpResponseError(501, "Unimplemented"));
+        completion.complete("https://artmachina.azurewebsites.net/passwordReset.html");
     }
 
     private Response.ErrorListener getErrorListener(final DataProvider.FailureListener failureListener) {

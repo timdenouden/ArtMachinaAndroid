@@ -20,6 +20,8 @@ import com.avanade.artmachina.app.models.DataProvider;
 import com.avanade.artmachina.app.models.HttpResponseError;
 import com.avanade.artmachina.app.models.User;
 
+import java.io.Console;
+
 import javax.security.auth.login.LoginException;
 
 public class LogInActivity extends AppCompatActivity {
