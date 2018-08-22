@@ -19,6 +19,12 @@ import com.avanade.artmachina.app.models.DataManager;
 import com.avanade.artmachina.app.models.DataProvider;
 import com.avanade.artmachina.app.models.HttpResponseError;
 import com.avanade.artmachina.app.models.User;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
 import java.io.Console;
 
@@ -33,6 +39,7 @@ public class LogInActivity extends AppCompatActivity {
     Button loginButton;
     Button registerButton;
     ProgressBar progressBar;
+    CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +84,27 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
 
+
+        callbackManager = CallbackManager.Factory.create();
+
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        // App code
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // App code
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        // App code
+                    }
+                });
+
         registerButton = findViewById(R.id.register);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +134,13 @@ public class LogInActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private boolean inputIsValid() {
