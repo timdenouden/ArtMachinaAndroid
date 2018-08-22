@@ -143,4 +143,8 @@ public class DataManager {
     public void registerUser(User newUser, DataProvider.AuthCompletion completion) {
         dataProvider.register(newUser, completion);
     }
+
+    public void updateGoogleProfile(User profile, DataProvider.AuthCompletion completion) {
+        dataProvider.updateGoogleProfile(profile, completion);
+    }
 }

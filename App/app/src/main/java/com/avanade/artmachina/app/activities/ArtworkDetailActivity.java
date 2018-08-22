@@ -64,11 +64,9 @@ public class ArtworkDetailActivity extends AppCompatActivity {
     String artworkId = "";
     EditText newCommentEditText;
     ImageButton addCommentButton;
-    Target target;
     View sourceView;
     View processedView;
     int animationDuration;
-    Animation animCrossFadeIn, animCrossFadeOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

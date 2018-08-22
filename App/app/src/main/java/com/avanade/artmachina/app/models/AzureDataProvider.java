@@ -303,6 +303,18 @@ public class AzureDataProvider implements DataProvider {
         completion.complete("https://artmachina.azurewebsites.net/passwordReset.html");
     }
 
+    @Override
+    public void updateGoogleProfile(User profile, final AuthCompletion completion) {
+        try {
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, BASE_URL + "googleauth",
+                    new JSONObject(gson.toJson(profile)), getAuthListener(completion), getErrorListener(completion));
+            requestQueue.add(request);
+            Log.d("register", request.getBody().toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     private Response.ErrorListener getErrorListener(final DataProvider.FailureListener failureListener) {
         return new Response.ErrorListener() {
             @Override

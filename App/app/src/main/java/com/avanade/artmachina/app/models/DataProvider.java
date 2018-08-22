@@ -49,5 +49,6 @@ public interface DataProvider {
     void updateRating(String token, Artwork artwork, EmptyCompletion completion);
     void getBookmarkList(String token, ArtworkListCompletion completion);
     void getPasswordResetUrl(UrlCompletion completion);
+    void updateGoogleProfile(User profile, AuthCompletion completion);
 
 }

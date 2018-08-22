@@ -17,6 +17,8 @@ public class User {
 
     private String company;
 
+    private String googleToken;
+
     public String getEmail() {
         return email;
     }
@@ -63,5 +65,13 @@ public class User {
 
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    public String getGoogleToken() {
+        return googleToken;
+    }
+
+    public void setGoogleToken(String googleToken) {
+        this.googleToken = googleToken;
     }
 }

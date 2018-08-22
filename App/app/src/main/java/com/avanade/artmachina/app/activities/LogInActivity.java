@@ -19,12 +19,21 @@ import com.avanade.artmachina.app.models.DataManager;
 import com.avanade.artmachina.app.models.DataProvider;
 import com.avanade.artmachina.app.models.HttpResponseError;
 import com.avanade.artmachina.app.models.User;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 
 import java.io.Console;
 
 import javax.security.auth.login.LoginException;
 
 public class LogInActivity extends AppCompatActivity {
+
+    private static final int GOOGLE_SIGN_IN = 2;
 
     Toolbar toolbar;
     EditText emailEditText;
@@ -33,6 +42,7 @@ public class LogInActivity extends AppCompatActivity {
     Button loginButton;
     Button registerButton;
     ProgressBar progressBar;
+    GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,10 +116,37 @@ public class LogInActivity extends AppCompatActivity {
                 });
             }
         });
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getResources().getString(R.string.server_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        SignInButton googleSignInButton = findViewById(R.id.sign_in_button);
+        googleSignInButton.setSize(SignInButton.SIZE_STANDARD);
+        googleSignInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.sign_in_button:
+                        signIn();
+                        break;
+                }
+            }
+        });
     }
 
-    private boolean inputIsValid() {
-        return emailEditText.getText().length() > 0 && passwordEditText.getText().length() > 0;
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == GOOGLE_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
     }
 
     @Override
@@ -117,4 +154,49 @@ public class LogInActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, GOOGLE_SIGN_IN);
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            // Signed in successfully
+            Log.d("Login", "googleToken: " + account.getIdToken());
+            User user = new User();
+            user.setEmail(account.getEmail());
+            user.setGoogleToken(account.getIdToken());
+            user.setFirstName(account.getGivenName());
+            user.setLastName(account.getFamilyName());
+            DataManager.getInstance(this).updateGoogleProfile(user, new DataProvider.AuthCompletion() {
+                @Override
+                public void complete(String token) {
+                    Log.d("google", "success: " + token);
+                    DataManager.getInstance(LogInActivity.this).setToken(token);
+                    onBackPressed();
+                }
+
+                @Override
+                public void failure(HttpResponseError error) {
+                    Log.d("google", "failure " + error.getErrorMessage());
+                }
+            });
+
+
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w("Login", "signInResult:failed code=" + e.getStatusCode());
+            Toast.makeText(this, "Unable to log in via google", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean inputIsValid() {
+        return emailEditText.getText().length() > 0 && passwordEditText.getText().length() > 0;
+    }
+
+
 }
