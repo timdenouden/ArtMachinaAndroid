@@ -50,5 +50,6 @@ public interface DataProvider {
     void getBookmarkList(String token, ArtworkListCompletion completion);
     void getPasswordResetUrl(UrlCompletion completion);
     void updateGoogleProfile(User profile, AuthCompletion completion);
+    void updateFacebookProfile(User profile, AuthCompletion completion);
 
 }

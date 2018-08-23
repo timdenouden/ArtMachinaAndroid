@@ -147,4 +147,8 @@ public class DataManager {
     public void updateGoogleProfile(User profile, DataProvider.AuthCompletion completion) {
         dataProvider.updateGoogleProfile(profile, completion);
     }
+
+    public void updateFacebookProfile(User profile, DataProvider.AuthCompletion completion) {
+        dataProvider.updateFacebookProfile(profile, completion);
+    }
 }

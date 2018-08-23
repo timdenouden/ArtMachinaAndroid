@@ -22,6 +22,7 @@ import com.avanade.artmachina.app.models.DataManager;
 import com.avanade.artmachina.app.models.DataProvider;
 import com.avanade.artmachina.app.models.HttpResponseError;
 import com.avanade.artmachina.app.models.User;
+import com.facebook.login.LoginManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -134,6 +135,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 DataManager.getInstance(getActivity()).logOut();
+                LoginManager.getInstance().logOut();
                 updateUIAnon();
             }
         });

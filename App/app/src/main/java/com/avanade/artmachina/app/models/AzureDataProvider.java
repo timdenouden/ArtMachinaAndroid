@@ -315,6 +315,18 @@ public class AzureDataProvider implements DataProvider {
         }
     }
 
+    @Override
+    public void updateFacebookProfile(User profile, final AuthCompletion completion) {
+        try {
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, BASE_URL + "facebookauth",
+                    new JSONObject(gson.toJson(profile)), getAuthListener(completion), getErrorListener(completion));
+            requestQueue.add(request);
+            Log.d("register", request.getBody().toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     private Response.ErrorListener getErrorListener(final DataProvider.FailureListener failureListener) {
         return new Response.ErrorListener() {
             @Override

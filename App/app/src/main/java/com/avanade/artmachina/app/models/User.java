@@ -19,6 +19,8 @@ public class User {
 
     private String googleToken;
 
+    private String facebookToken;
+
     public String getEmail() {
         return email;
     }
@@ -73,5 +75,13 @@ public class User {
 
     public void setGoogleToken(String googleToken) {
         this.googleToken = googleToken;
+    }
+
+    public String getFacebookToken() {
+        return facebookToken;
+    }
+
+    public void setFacebookToken(String facebookToken) {
+        this.facebookToken = facebookToken;
     }
 }
