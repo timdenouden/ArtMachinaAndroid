@@ -17,6 +17,8 @@ public class User {
 
     private String company;
 
+    private String deviceType = "android";
+
     private String googleToken;
 
     private String facebookToken;
